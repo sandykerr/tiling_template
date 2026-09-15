@@ -48,7 +48,7 @@ class FilenameAssociationStrategy(AssociationStrategy):
         # Conditional suffix removal
         if self.suffix_to_remove is not None:
             key_candidate_old = key_candidate
-            key_candidate = key_candidate.suffix()
+            key_candidate = key_candidate.removesuffix()
             if key_candidate_old == key_candidate:
                 print(
                     f"[WARNING]: Suffix was not removed from filename. "
