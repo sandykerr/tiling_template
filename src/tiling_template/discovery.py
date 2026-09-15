@@ -7,8 +7,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
+from .types import AssetRole
 
-AssetRole = Literal['input', 'label', 'metadata', 'qa', 'sidecar']
+
 AssetSpecMatcher = Literal['glob', 'regex']
 AssetSpecMatchScope = Literal['basename', 'stem', 'relative_path']
 

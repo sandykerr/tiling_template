@@ -1,4 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+from .types import AssetRole
 
 
 @dataclass(frozen=True, slots=True)
@@ -7,12 +9,29 @@ class SplitConfig:
 
 
 @dataclass(frozen=True, slots=True)
-class ModalityAssocationConfig:
+class ModalityAssociationConfig:
     """Represents the configuration for a single modality association."""
-    role: str
+
+    role: AssetRole
     modality: str
     minimum_count: int = 1
     maximum_count: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.minimum_count < 0:
+            raise ValueError(
+                "Modality minimum_count cannot be negative."
+            )
+
+        if self.maximum_count is not None:
+            if self.maximum_count < 0:
+                raise ValueError(
+                    "Modality maximum_count cannot be negative."
+                )
+            elif self.maximum_count < self.minimum_count:
+                raise ValueError(
+                    "Modality maximum_count cannot be less than minimum_count."
+                )
 
 
 @dataclass(frozen=True, slots=True)
