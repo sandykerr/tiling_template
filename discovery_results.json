@@ -1,0 +1,2486 @@
+[
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h08v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 2401461,
+    "modified_time_ns": 1788728464062215190
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h08v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 162662246,
+    "modified_time_ns": 1788970079819908783
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h08v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 122298181,
+    "modified_time_ns": 1788970099687776788
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h08v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85766911,
+    "modified_time_ns": 1788970086506401604
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h08v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 110318026,
+    "modified_time_ns": 1788729413634935037
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h08v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 202465812,
+    "modified_time_ns": 1788970114464980842
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h08v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 126654260,
+    "modified_time_ns": 1788970134737391126
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h08v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h08v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 88519613,
+    "modified_time_ns": 1788970121805468181
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h09v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 58321051,
+    "modified_time_ns": 1788729832309882116
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h09v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 197352968,
+    "modified_time_ns": 1788970149375656397
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h09v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 128574487,
+    "modified_time_ns": 1788970169388966709
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h09v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 91285910,
+    "modified_time_ns": 1788970156459800771
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h09v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134623441,
+    "modified_time_ns": 1788731614678034359
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h09v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 217402141,
+    "modified_time_ns": 1788970184472915473
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h09v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131007883,
+    "modified_time_ns": 1788970205256878316
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h09v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h09v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92511555,
+    "modified_time_ns": 1788970191896966833
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h10v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 102195040,
+    "modified_time_ns": 1788732281441503020
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h10v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 219934844,
+    "modified_time_ns": 1788970220582797446
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h10v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134138631,
+    "modified_time_ns": 1788970241408661465
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h10v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95109859,
+    "modified_time_ns": 1788970228182837901
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h10v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 135293930,
+    "modified_time_ns": 1788734030926292361
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h10v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 212792104,
+    "modified_time_ns": 1788970256164134196
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h10v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 137097400,
+    "modified_time_ns": 1788970276912220830
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h10v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 99116217,
+    "modified_time_ns": 1788970263776177381
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h10v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 52291475,
+    "modified_time_ns": 1788735067544629656
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h10v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 167440123,
+    "modified_time_ns": 1788970291610487804
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h10v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 120641884,
+    "modified_time_ns": 1788970312476778473
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h10v06/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h10v06/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84560046,
+    "modified_time_ns": 1788970299206081196
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 27686013,
+    "modified_time_ns": 1788735581457565765
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 173273595,
+    "modified_time_ns": 1788970328673145410
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 116640770,
+    "modified_time_ns": 1788970349602717700
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 74987194,
+    "modified_time_ns": 1788970336872696945
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 67458279,
+    "modified_time_ns": 1788736536843907415
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 214909970,
+    "modified_time_ns": 1788970365152024748
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134067111,
+    "modified_time_ns": 1788970385963740385
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93063275,
+    "modified_time_ns": 1788970372898616421
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 112270694,
+    "modified_time_ns": 1788737447201643169
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 217156161,
+    "modified_time_ns": 1788970400686522639
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 136671644,
+    "modified_time_ns": 1788970421397892339
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 98374706,
+    "modified_time_ns": 1788970408310983744
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 86719348,
+    "modified_time_ns": 1788738042271166797
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 191257318,
+    "modified_time_ns": 1788970436253123331
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129394332,
+    "modified_time_ns": 1788970457660353319
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92803639,
+    "modified_time_ns": 1788970444212615455
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132053501,
+    "modified_time_ns": 1788738984931276244
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 202340180,
+    "modified_time_ns": 1788970472803967991
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131296883,
+    "modified_time_ns": 1788970493757142702
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v08/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v08/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94432341,
+    "modified_time_ns": 1788970480634322862
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123290392,
+    "modified_time_ns": 1788740233378869437
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 194712400,
+    "modified_time_ns": 1788970508455138439
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130012930,
+    "modified_time_ns": 1788970529496939588
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v09/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v09/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93143232,
+    "modified_time_ns": 1788970516040204252
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h11v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 121153963,
+    "modified_time_ns": 1788741732199237474
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h11v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 202684145,
+    "modified_time_ns": 1788970544380645529
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h11v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130722343,
+    "modified_time_ns": 1788970565134802763
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h11v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h11v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93452329,
+    "modified_time_ns": 1788970552017365794
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 949186,
+    "modified_time_ns": 1788741920771511850
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 35730761,
+    "modified_time_ns": 1788970584610505253
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 30930983,
+    "modified_time_ns": 1788970603015692875
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v01/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v01/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 17904120,
+    "modified_time_ns": 1788970592586730906
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 40488386,
+    "modified_time_ns": 1788742301814436148
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 201001121,
+    "modified_time_ns": 1788970618230797565
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131644181,
+    "modified_time_ns": 1788970639012866052
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84000900,
+    "modified_time_ns": 1788970625888813262
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 66853212,
+    "modified_time_ns": 1788742974348990335
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 214352999,
+    "modified_time_ns": 1788970654089675385
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131783384,
+    "modified_time_ns": 1788970675313105149
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 90345016,
+    "modified_time_ns": 1788970661957538210
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 73226135,
+    "modified_time_ns": 1788743706717587366
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 205270537,
+    "modified_time_ns": 1788970690405939387
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133509838,
+    "modified_time_ns": 1788970712075413373
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95130183,
+    "modified_time_ns": 1788970698608968571
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 7225218,
+    "modified_time_ns": 1788744071875356262
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 158332531,
+    "modified_time_ns": 1788970726813506988
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 116574997,
+    "modified_time_ns": 1788970747153755877
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 81086390,
+    "modified_time_ns": 1788970734153078836
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129768456,
+    "modified_time_ns": 1788746130606411790
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 199165179,
+    "modified_time_ns": 1788970762271555183
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131577172,
+    "modified_time_ns": 1788970784005427904
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v09/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v09/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94447349,
+    "modified_time_ns": 1788970770434350220
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132894297,
+    "modified_time_ns": 1788747513375354849
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 211448428,
+    "modified_time_ns": 1788970799286247106
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 138021513,
+    "modified_time_ns": 1788970819839625727
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 99931995,
+    "modified_time_ns": 1788970806622301909
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h12v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 120100292,
+    "modified_time_ns": 1788748663526333962
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h12v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 205939357,
+    "modified_time_ns": 1788970834619299312
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h12v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131549879,
+    "modified_time_ns": 1788970855663240372
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h12v12/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h12v12/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93134379,
+    "modified_time_ns": 1788970842577378133
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h13v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 572249,
+    "modified_time_ns": 1788748891814571213
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h13v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 82338493,
+    "modified_time_ns": 1788970872999041946
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h13v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 71406758,
+    "modified_time_ns": 1788970892078761543
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v01/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h13v01/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 41181454,
+    "modified_time_ns": 1788970880714013016
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h13v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 48625905,
+    "modified_time_ns": 1788749367066144931
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h13v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 194112496,
+    "modified_time_ns": 1788970906470948793
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h13v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129251987,
+    "modified_time_ns": 1788970926619524027
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h13v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 82193109,
+    "modified_time_ns": 1788970913734328003
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h13v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134046095,
+    "modified_time_ns": 1788750982044769561
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h13v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 216902086,
+    "modified_time_ns": 1788970941620531308
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h13v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 138768152,
+    "modified_time_ns": 1788970962627624536
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h13v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 99845951,
+    "modified_time_ns": 1788970949210265100
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h13v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 110434961,
+    "modified_time_ns": 1788752296914387454
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h13v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 201520656,
+    "modified_time_ns": 1788970977157369728
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h13v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133785238,
+    "modified_time_ns": 1788970997985819801
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h13v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 96218194,
+    "modified_time_ns": 1788970984858565638
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h13v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 70648447,
+    "modified_time_ns": 1788753298811778780
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h13v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 180412357,
+    "modified_time_ns": 1788971012425966567
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h13v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 127454915,
+    "modified_time_ns": 1788971033585092915
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h13v12/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h13v12/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 90037933,
+    "modified_time_ns": 1788971020191321431
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h16v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h16v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 23902350,
+    "modified_time_ns": 1788753698322894586
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h16v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h16v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 160134460,
+    "modified_time_ns": 1788971048585483381
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h16v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h16v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 115370844,
+    "modified_time_ns": 1788971068673282847
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h16v01/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h16v01/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 67907223,
+    "modified_time_ns": 1788971055770226785
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h17v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h17v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 91375105,
+    "modified_time_ns": 1788755243740074768
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h17v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h17v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 192179823,
+    "modified_time_ns": 1788971083273029039
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h17v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h17v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123639615,
+    "modified_time_ns": 1788971103554900006
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h17v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h17v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85461163,
+    "modified_time_ns": 1788971090435793766
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h18v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93036228,
+    "modified_time_ns": 1788756017027285488
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h18v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 186152024,
+    "modified_time_ns": 1788971118074780665
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h18v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130500569,
+    "modified_time_ns": 1788971138654815122
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h18v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92287076,
+    "modified_time_ns": 1788971125523494551
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h18v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 127395621,
+    "modified_time_ns": 1788756740013878316
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h18v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 198644300,
+    "modified_time_ns": 1788971153242405405
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h18v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132158351,
+    "modified_time_ns": 1788971173908622426
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h18v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94815953,
+    "modified_time_ns": 1788971160621998352
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h18v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 128543864,
+    "modified_time_ns": 1788757609486082006
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h18v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 218398792,
+    "modified_time_ns": 1788971188297437477
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h18v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 128329391,
+    "modified_time_ns": 1788971207950944816
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h18v07/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h18v07/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 88342636,
+    "modified_time_ns": 1788971195190617235
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132142935,
+    "modified_time_ns": 1788758363731560111
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 210424911,
+    "modified_time_ns": 1788971223031190462
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 135342997,
+    "modified_time_ns": 1788971243684200268
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 98336369,
+    "modified_time_ns": 1788971230314340483
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 125533776,
+    "modified_time_ns": 1788759072313777720
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 208448291,
+    "modified_time_ns": 1788971258481364615
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 125578814,
+    "modified_time_ns": 1788971279042837457
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v07/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v07/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84092066,
+    "modified_time_ns": 1788971265757676357
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129436530,
+    "modified_time_ns": 1788761138965493904
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 209051219,
+    "modified_time_ns": 1788971293952821226
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133441392,
+    "modified_time_ns": 1788971314628883826
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v08/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v08/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95000880,
+    "modified_time_ns": 1788971301487899229
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 114980866,
+    "modified_time_ns": 1788762609421902751
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 200946732,
+    "modified_time_ns": 1788971329503096103
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131023666,
+    "modified_time_ns": 1788971349952646891
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v09/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v09/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93229458,
+    "modified_time_ns": 1788971336910206444
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 105016899,
+    "modified_time_ns": 1788763883966453356
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 204602362,
+    "modified_time_ns": 1788971364406290600
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130395585,
+    "modified_time_ns": 1788971385962711574
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92972070,
+    "modified_time_ns": 1788971371420010666
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 87442700,
+    "modified_time_ns": 1788765014687126464
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 195042465,
+    "modified_time_ns": 1788971400659555266
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 125139168,
+    "modified_time_ns": 1788971421146812122
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 87232808,
+    "modified_time_ns": 1788971407926687156
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h19v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 30101228,
+    "modified_time_ns": 1788765494305363464
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h19v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 165450480,
+    "modified_time_ns": 1788971435482388543
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h19v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 119819298,
+    "modified_time_ns": 1788971455705804319
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h19v12/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h19v12/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 82048831,
+    "modified_time_ns": 1788971442643013696
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 64758791,
+    "modified_time_ns": 1788765974733163154
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 196735001,
+    "modified_time_ns": 1788971470566234975
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133188104,
+    "modified_time_ns": 1788971490771058176
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85433340,
+    "modified_time_ns": 1788971477763347815
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 128133897,
+    "modified_time_ns": 1788767638068446943
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 215474330,
+    "modified_time_ns": 1788971505695079790
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 136079708,
+    "modified_time_ns": 1788971526820540810
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95455826,
+    "modified_time_ns": 1788971513219917610
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123703118,
+    "modified_time_ns": 1788769067261391214
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 197442893,
+    "modified_time_ns": 1788971542153074557
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131202416,
+    "modified_time_ns": 1788971563270870614
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94357454,
+    "modified_time_ns": 1788971550105923421
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 127496312,
+    "modified_time_ns": 1788770393115051465
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 191630076,
+    "modified_time_ns": 1788971577757560850
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 117010445,
+    "modified_time_ns": 1788971598902169686
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v06/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v06/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 73541537,
+    "modified_time_ns": 1788971585049911577
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v08/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129307152,
+    "modified_time_ns": 1788771757629703898
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v08/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 207588943,
+    "modified_time_ns": 1788971614016682535
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v08/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132956256,
+    "modified_time_ns": 1788971634605252254
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v08/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v08/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94785861,
+    "modified_time_ns": 1788971621532405962
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v09/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130540445,
+    "modified_time_ns": 1788772962438788868
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v09/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 207371472,
+    "modified_time_ns": 1788971649891943792
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v09/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133573251,
+    "modified_time_ns": 1788971671332763619
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v09/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v09/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95526309,
+    "modified_time_ns": 1788971657816591934
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129615438,
+    "modified_time_ns": 1788773735102642460
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 214889128,
+    "modified_time_ns": 1788971686569626096
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 135487232,
+    "modified_time_ns": 1788971707504029633
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 97171764,
+    "modified_time_ns": 1788971694147287688
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h20v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123163321,
+    "modified_time_ns": 1788774501342679727
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h20v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 213641875,
+    "modified_time_ns": 1788971722701746402
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h20v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134375615,
+    "modified_time_ns": 1788971743813860259
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h20v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h20v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 95643731,
+    "modified_time_ns": 1788971730550195371
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v01/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 9182446,
+    "modified_time_ns": 1788774704692202275
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v01/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 137946548,
+    "modified_time_ns": 1788971759127946178
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v01/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 112187073,
+    "modified_time_ns": 1788971779103225819
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v01/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v01/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 64758127,
+    "modified_time_ns": 1788971766578736393
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 54455656,
+    "modified_time_ns": 1788775120279163543
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 201949893,
+    "modified_time_ns": 1788971793853641908
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133152741,
+    "modified_time_ns": 1788971814579071960
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85314837,
+    "modified_time_ns": 1788971801269189659
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 124949740,
+    "modified_time_ns": 1788776015879711748
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 212336049,
+    "modified_time_ns": 1788971831957328962
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 130167916,
+    "modified_time_ns": 1788971853016796529
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92912853,
+    "modified_time_ns": 1788971839689655371
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v05/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131479626,
+    "modified_time_ns": 1788776815226566285
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v05/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 215535631,
+    "modified_time_ns": 1788971868235375303
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v05/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123982341,
+    "modified_time_ns": 1788971888873187256
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v05/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v05/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85408230,
+    "modified_time_ns": 1788971875776054187
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 115103872,
+    "modified_time_ns": 1788777480030930605
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 200199549,
+    "modified_time_ns": 1788971904009499596
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 115098052,
+    "modified_time_ns": 1788971924736728597
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v06/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v06/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 77136238,
+    "modified_time_ns": 1788971911441425536
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h21v10/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 107474853,
+    "modified_time_ns": 1788778131836517921
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h21v10/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 202233110,
+    "modified_time_ns": 1788971939870627286
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h21v10/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131373293,
+    "modified_time_ns": 1788971960587866317
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h21v10/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h21v10/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94073308,
+    "modified_time_ns": 1788971947326286467
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h22v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 75689104,
+    "modified_time_ns": 1788778755776978843
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h22v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 216824796,
+    "modified_time_ns": 1788971975392222575
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h22v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133075282,
+    "modified_time_ns": 1788971996716221173
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h22v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 93098309,
+    "modified_time_ns": 1788971983345177821
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h22v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 117502639,
+    "modified_time_ns": 1788780117991953140
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h22v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 214429723,
+    "modified_time_ns": 1788972011463747667
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h22v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 122158648,
+    "modified_time_ns": 1788972032412951110
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h22v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h22v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84706696,
+    "modified_time_ns": 1788972019200206804
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h23v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 40236074,
+    "modified_time_ns": 1788780903266317929
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h23v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 199828499,
+    "modified_time_ns": 1788972047134078845
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h23v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 131869620,
+    "modified_time_ns": 1788972067552491611
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h23v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 83467158,
+    "modified_time_ns": 1788972054480474723
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h23v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 67751142,
+    "modified_time_ns": 1788781608507142648
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h23v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 215813489,
+    "modified_time_ns": 1788972082504109178
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h23v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 133314265,
+    "modified_time_ns": 1788972103229399246
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h23v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h23v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 91620802,
+    "modified_time_ns": 1788972089802340056
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h24v02/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 31196133,
+    "modified_time_ns": 1788781961166098750
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h24v02/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 180726127,
+    "modified_time_ns": 1788972118716648756
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h24v02/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 116675190,
+    "modified_time_ns": 1788972139026641908
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v02/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h24v02/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 75273030,
+    "modified_time_ns": 1788972126265654684
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h24v03/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 66667240,
+    "modified_time_ns": 1788782621344338565
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h24v03/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 216892024,
+    "modified_time_ns": 1788972154104581538
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h24v03/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132224108,
+    "modified_time_ns": 1788972175020292133
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v03/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h24v03/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 90116142,
+    "modified_time_ns": 1788972161564436355
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h24v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 109949302,
+    "modified_time_ns": 1788783424730672877
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h24v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 211453597,
+    "modified_time_ns": 1788972190429889060
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h24v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 122882402,
+    "modified_time_ns": 1788972211565069953
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h24v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h24v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84164439,
+    "modified_time_ns": 1788972197997078066
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h26v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h26v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 126765680,
+    "modified_time_ns": 1788784350223780708
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h26v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h26v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 209573488,
+    "modified_time_ns": 1788972227192694835
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h26v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h26v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134652960,
+    "modified_time_ns": 1788972248922274585
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h26v06/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h26v06/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 96731255,
+    "modified_time_ns": 1788972235047328587
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h27v04/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 57214338,
+    "modified_time_ns": 1788784762135125017
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h27v04/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 195133401,
+    "modified_time_ns": 1788972264139485396
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h27v04/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 132197364,
+    "modified_time_ns": 1788972284904975539
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v04/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h27v04/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 94046201,
+    "modified_time_ns": 1788972271397567277
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h27v06/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 134899889,
+    "modified_time_ns": 1788785482739653136
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h27v06/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 211935059,
+    "modified_time_ns": 1788972300400633393
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h27v06/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 135677654,
+    "modified_time_ns": 1788972322024979966
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v06/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h27v06/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 97620677,
+    "modified_time_ns": 1788972308072878150
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h27v07/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92561108,
+    "modified_time_ns": 1788786045590736766
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h27v07/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 191502283,
+    "modified_time_ns": 1788972337448943648
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h27v07/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129454109,
+    "modified_time_ns": 1788972359116097029
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h27v07/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h27v07/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 92529479,
+    "modified_time_ns": 1788972345294884351
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h28v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h28v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 88919680,
+    "modified_time_ns": 1788786647117206692
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h28v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h28v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 190569012,
+    "modified_time_ns": 1788972374028677228
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h28v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h28v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 122721968,
+    "modified_time_ns": 1788972395413004533
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h28v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h28v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 84147222,
+    "modified_time_ns": 1788972381960429199
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h29v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 127217551,
+    "modified_time_ns": 1788787507528491982
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h29v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 209296405,
+    "modified_time_ns": 1788972410853410587
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h29v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 126851663,
+    "modified_time_ns": 1788972432037926017
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h29v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 87400411,
+    "modified_time_ns": 1788972418473413070
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h29v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 100351224,
+    "modified_time_ns": 1788788244366736350
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h29v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 194898892,
+    "modified_time_ns": 1788972447050491031
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h29v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 127581092,
+    "modified_time_ns": 1788972468088472079
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h29v12/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h29v12/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 88848485,
+    "modified_time_ns": 1788972454542379676
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h30v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h30v12/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 46409743,
+    "modified_time_ns": 1788788770999296017
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h30v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h30v12/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 179760346,
+    "modified_time_ns": 1788972482667471325
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h30v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h30v12/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 123856840,
+    "modified_time_ns": 1788972503184488754
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h30v12/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h30v12/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 85468121,
+    "modified_time_ns": 1788972489725813221
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h31v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "relative_path": "h31v11/2025/3-Metrics/AlphaEarth_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 48919270,
+    "modified_time_ns": 1788789279049252861
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h31v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "relative_path": "h31v11/2025/3-Metrics/MODIS_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 199925465,
+    "modified_time_ns": 1788972518074387772
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h31v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "relative_path": "h31v11/2025/3-Metrics/PACE_AltSort_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 129702704,
+    "modified_time_ns": 1788972539031091493
+  },
+  {
+    "path": "/explore/nobackup/projects/ilab/data/MODIS/PACE_VCF/output/h31v11/2025/3-Metrics/PACE_Metrics.tif",
+    "relative_path": "h31v11/2025/3-Metrics/PACE_Metrics.tif",
+    "spec_id": "PACE_HYP_INPUTS",
+    "role": "input",
+    "modality": "pace_metrics",
+    "size_bytes": 91534574,
+    "modified_time_ns": 1788972525500175872
+  }
+]

@@ -110,7 +110,7 @@ class AssetRef:
     size_bytes: int
     modified_time_ns: int
 
-    def asset_ref_to_dict(self):
+    def to_dict(self):
         return {
             "path": str(self.path),
             "relative_path": self.relative_path.as_posix(),
