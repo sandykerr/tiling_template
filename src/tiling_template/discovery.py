@@ -110,6 +110,17 @@ class AssetRef:
     size_bytes: int
     modified_time_ns: int
 
+    def asset_ref_to_dict(self):
+        return {
+            "path": str(self.path),
+            "relative_path": self.relative_path.as_posix(),
+            "spec_id": self.spec_id,
+            "role": self.role,
+            "modality": self.modality,
+            "size_bytes": self.size_bytes,
+            "modified_time_ns": self.modified_time_ns,
+        }
+
 
 class AssetDiscoverer:
     """Discover matching local assets in deterministic path order."""
