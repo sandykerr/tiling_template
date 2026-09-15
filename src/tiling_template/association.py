@@ -38,7 +38,7 @@ class FilenameAssociationStrategy(AssociationStrategy):
         # Conditional prefix removal
         if self.prefix_to_remove is not None:
             key_candidate_old = key_candidate
-            key_candidate = key_candidate.removeprefix()
+            key_candidate = key_candidate.removeprefix(self.prefix_to_remove)
             if key_candidate_old == key_candidate:
                 print(
                     f"[WARNING]: Prefix was not removed from filename. "
@@ -48,7 +48,7 @@ class FilenameAssociationStrategy(AssociationStrategy):
         # Conditional suffix removal
         if self.suffix_to_remove is not None:
             key_candidate_old = key_candidate
-            key_candidate = key_candidate.removesuffix()
+            key_candidate = key_candidate.removesuffix(self.suffix_to_remove)
             if key_candidate_old == key_candidate:
                 print(
                     f"[WARNING]: Suffix was not removed from filename. "
