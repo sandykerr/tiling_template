@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import List, Optional, Literal, Tuple, Sequence
 from abc import ABC, abstractmethod
 
-from .configs import ModalityAssocationConfig
-from .discovery import AssetRef
+from configs import ModalityAssocationConfig
+from discovery import AssetRef
 
 FilenameMatchSpec = Literal['basename', 'stem']
 DirectoryMatchSpec = Literal['immediate_parents', 'parent_indices']
