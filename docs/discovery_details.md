@@ -1,0 +1,6 @@
+- Patterns are case sensitive
+- If multiple specs match the same asset, we should throw an error.
+- Hidden files are excluded from file globbing.
+- Unreadable path behavior: throw an error
+- Maximum traversal depth: 10
+- Include/exclude patterns: exclude patterns are part of AssetSpec
