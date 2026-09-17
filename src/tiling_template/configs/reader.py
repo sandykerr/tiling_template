@@ -30,3 +30,15 @@ class XarrayBackendConfig:
     decode_cf: bool = False
     mask_and_scale: bool = False
     cache: bool = False
+    plugin_modules: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if any(
+            not module.strip() or module != module.strip()
+            for module in self.plugin_modules
+        ):
+            raise ValueError(
+                "Xarray plugin module names cannot be blank or padded."
+            )
+        if len(set(self.plugin_modules)) != len(self.plugin_modules):
+            raise ValueError("Xarray plugin module names must be unique.")

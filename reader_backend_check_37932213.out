@@ -1,0 +1,210 @@
+Job started at: Thu Sep 17 03:43:29 PM EDT 2026
+Job ID: 37932213
+Node list: gh016
+Partition: grace
+Repository: /panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template
+Container: /explore/nobackup/people/ajkerr1/containers/pace-container-arm64
+Backend: xarray
+Workers: 10
+
+2026-09-17 15:44:06,483 | INFO | Starting Xarray checks with 10 worker process(es).
+Xarray datasets:   0%|          | 0/3 [00:00<?, ?dataset/s]                                                           2026-09-17 15:44:41,956 | ERROR | Failed dataset: /explore/nobackup/projects/lfm/rawdata/Lunar/LowRes_MLDataset_v1_bilinear/vis/M1183281585CE_r8100_c600.nc
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/concurrent/futures/process.py", line 263, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 226, in inspect_dataset
+    result = session.window_reader.read_window(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/src/tiling_template/readers/xarray_reader.py", line 394, in read_window
+    masked_data = np.ma.asarray(windowed.values)
+                                ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/dataarray.py", line 803, in values
+    return self.variable.values
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 555, in values
+    return _as_array_or_item(self._data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 335, in _as_array_or_item
+    data = np.asarray(data)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 609, in __array__
+    return np.asarray(self.get_duck_array(), dtype=dtype, copy=copy)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 930, in get_duck_array
+    return self.array.get_duck_array()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 770, in get_duck_array
+    array = self.array[self.key]
+            ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 67, in __getitem__
+    return indexing.explicit_indexing_adapter(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 1162, in explicit_indexing_adapter
+    result = raw_indexing_method(raw_key.tuple)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 74, in _getitem
+    return array[key]
+           ~~~~~^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/h5netcdf/core.py", line 729, in __getitem__
+    return h5ds[key]
+           ~~~~^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/usr/local/lib/python3.12/dist-packages/h5py/_hl/dataset.py", line 872, in __getitem__
+    return self._fast_reader.read(args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/_selector.pyx", line 393, in h5py._selector.Reader.read
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 320, in run_parallel
+    log_messages(future.result())
+                 ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+Xarray datasets:   0%|          | 0/3 [00:35<?, ?dataset/s]Xarray datasets:  33%|███▎      | 1/3 [00:35<01:11, 35.70s/dataset]                                                                   2026-09-17 15:44:42,291 | ERROR | Failed dataset: /explore/nobackup/projects/lfm/rawdata/Lunar/LowRes_MLDataset_v1_bilinear/vis/M1181942100CE_r5550_c300.nc
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/concurrent/futures/process.py", line 263, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 226, in inspect_dataset
+    result = session.window_reader.read_window(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/src/tiling_template/readers/xarray_reader.py", line 394, in read_window
+    masked_data = np.ma.asarray(windowed.values)
+                                ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/dataarray.py", line 803, in values
+    return self.variable.values
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 555, in values
+    return _as_array_or_item(self._data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 335, in _as_array_or_item
+    data = np.asarray(data)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 609, in __array__
+    return np.asarray(self.get_duck_array(), dtype=dtype, copy=copy)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 930, in get_duck_array
+    return self.array.get_duck_array()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 770, in get_duck_array
+    array = self.array[self.key]
+            ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 67, in __getitem__
+    return indexing.explicit_indexing_adapter(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 1162, in explicit_indexing_adapter
+    result = raw_indexing_method(raw_key.tuple)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 74, in _getitem
+    return array[key]
+           ~~~~~^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/h5netcdf/core.py", line 729, in __getitem__
+    return h5ds[key]
+           ~~~~^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/usr/local/lib/python3.12/dist-packages/h5py/_hl/dataset.py", line 872, in __getitem__
+    return self._fast_reader.read(args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/_selector.pyx", line 393, in h5py._selector.Reader.read
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 320, in run_parallel
+    log_messages(future.result())
+                 ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+Xarray datasets:  33%|███▎      | 1/3 [00:35<01:11, 35.70s/dataset]Xarray datasets:  67%|██████▋   | 2/3 [00:35<00:14, 14.83s/dataset]                                                                   2026-09-17 15:44:42,504 | ERROR | Failed dataset: /explore/nobackup/projects/lfm/rawdata/Lunar/LowRes_MLDataset_v1_bilinear/vis/M1394391127CE_r3900_c1800.nc
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/concurrent/futures/process.py", line 263, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 226, in inspect_dataset
+    result = session.window_reader.read_window(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/src/tiling_template/readers/xarray_reader.py", line 394, in read_window
+    masked_data = np.ma.asarray(windowed.values)
+                                ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/dataarray.py", line 803, in values
+    return self.variable.values
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 555, in values
+    return _as_array_or_item(self._data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/variable.py", line 335, in _as_array_or_item
+    data = np.asarray(data)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 609, in __array__
+    return np.asarray(self.get_duck_array(), dtype=dtype, copy=copy)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 930, in get_duck_array
+    return self.array.get_duck_array()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 770, in get_duck_array
+    array = self.array[self.key]
+            ~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 67, in __getitem__
+    return indexing.explicit_indexing_adapter(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/core/indexing.py", line 1162, in explicit_indexing_adapter
+    result = raw_indexing_method(raw_key.tuple)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/xarray/backends/h5netcdf_.py", line 74, in _getitem
+    return array[key]
+           ~~~~~^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/h5netcdf/core.py", line 729, in __getitem__
+    return h5ds[key]
+           ~~~~^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/usr/local/lib/python3.12/dist-packages/h5py/_hl/dataset.py", line 872, in __getitem__
+    return self._fast_reader.read(args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/_selector.pyx", line 393, in h5py._selector.Reader.read
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/panfs/ccds02/nobackup/people/ajkerr1/hyperspectral/tiling_template/scripts/xarray_reader_check.py", line 320, in run_parallel
+    log_messages(future.result())
+                 ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+OSError: Can't synchronously read data (can't open directory (/usr/local/lib/plugin). Please verify its existence)
+Xarray datasets:  67%|██████▋   | 2/3 [00:36<00:14, 14.83s/dataset]Xarray datasets: 100%|██████████| 3/3 [00:36<00:00,  8.17s/dataset]Xarray datasets: 100%|██████████| 3/3 [00:36<00:00, 12.07s/dataset]
+2026-09-17 15:44:43,055 | ERROR | 3 of 3 Xarray datasets failed.

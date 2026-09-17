@@ -279,10 +279,21 @@ class TestBackendConfigs(unittest.TestCase):
             )
 
     def test_xarray_config_is_frozen(self):
-        config = XarrayBackendConfig(engine="netcdf4", group="observations")
+        config = XarrayBackendConfig(
+            engine="netcdf4",
+            group="observations",
+            plugin_modules=("hdf5plugin",),
+        )
 
         with self.assertRaises(FrozenInstanceError):
             config.engine = None
+
+        with self.assertRaisesRegex(ValueError, "blank or padded"):
+            XarrayBackendConfig(plugin_modules=("  ",))
+        with self.assertRaisesRegex(ValueError, "must be unique"):
+            XarrayBackendConfig(
+                plugin_modules=("hdf5plugin", "hdf5plugin"),
+            )
 
 
 class TestRasterioReaders(unittest.TestCase):
@@ -873,6 +884,42 @@ class TestXarrayReaders(unittest.TestCase):
             cache=False,
         )
         self.assertEqual(first, second)
+
+    def test_backend_initializes_plugin_modules_before_opening_dataset(self):
+        backend = XarrayBackend(
+            XarrayBackendConfig(
+                engine="netcdf4",
+                plugin_modules=("first_plugin", "second_plugin"),
+            )
+        )
+
+        with patch(
+            "tiling_template.readers.xarray_reader.import_module"
+        ) as import_mock:
+            with backend.open(self.asset) as session:
+                metadata = session.metadata_reader.read_metadata()
+
+        self.assertEqual(
+            [args[0] for args, _ in import_mock.call_args_list],
+            ["first_plugin", "second_plugin"],
+        )
+        self.assertEqual(metadata.asset, self.asset)
+
+    def test_backend_reports_plugin_initialization_failure(self):
+        backend = XarrayBackend(
+            XarrayBackendConfig(plugin_modules=("missing_plugin",))
+        )
+
+        with patch(
+            "tiling_template.readers.xarray_reader.import_module",
+            side_effect=ModuleNotFoundError("missing dependency"),
+        ):
+            with self.assertRaisesRegex(
+                ImportError,
+                "missing_plugin",
+            ):
+                with backend.open(self.asset):
+                    pass
 
 
 if __name__ == "__main__":

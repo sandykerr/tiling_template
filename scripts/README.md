@@ -30,17 +30,32 @@ sbatch --cpus-per-task=10 scripts/sbatch_reader_backend_check.sh \
 
 ## Xarray
 
-The Xarray check reads metadata by default. Pass `--variable` to exercise
-windowed reading for one data variable. Use repeated `--dimension-index`
-arguments to select positions along dimensions such as time or vertical level;
-unselected non-spatial dimensions are retained in every returned window.
+The Xarray check reads metadata by default. Pass `--variables` to exercise
+windowed reading for one or more named data variables, or `--all-variables` to
+read every variable containing the resolved spatial dimensions. Variables
+without that spatial grid are reported and skipped in all-variable mode.
+
+Use repeated `--dimension-index` arguments to select positions along
+dimensions such as time or vertical level. The same selections apply to every
+requested variable; unselected non-spatial dimensions are retained.
 
 ```bash
 sbatch --cpus-per-task=10 scripts/sbatch_reader_backend_check.sh \
   --backend xarray \
   --datasets /explore/nobackup/path/a.nc /explore/nobackup/path/b.nc \
-  --variable temperature \
+  --variables temperature quality \
   --dimension-index time=0 \
+  --window-size 256 \
+  --windows-per-dataset 5
+```
+
+To sample every spatial variable:
+
+```bash
+sbatch --cpus-per-task=10 scripts/sbatch_reader_backend_check.sh \
+  --backend xarray \
+  --datasets /explore/nobackup/path/a.nc /explore/nobackup/path/b.nc \
+  --all-variables \
   --window-size 256 \
   --windows-per-dataset 5
 ```
@@ -49,6 +64,11 @@ Both scripts use Python logging and write their `tqdm` progress bars to
 standard output. They inspect every supplied dataset and return a nonzero exit
 status if any dataset fails. The container must provide `tqdm` in addition to
 the applicable backend dependencies.
+
+The Xarray check configures `hdf5plugin` as a worker-local backend plugin. Each
+spawned worker imports it before opening a NetCDF/HDF5 file so its bundled HDF5
+compression filters are registered in that process. The core Xarray backend
+keeps plugin imports optional through `XarrayBackendConfig.plugin_modules`.
 
 The Python entry points also accept `--workers` when run directly. When using
 the Slurm wrapper, worker count is intentionally controlled only by

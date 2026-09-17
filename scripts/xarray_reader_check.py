@@ -12,6 +12,7 @@ from time import perf_counter
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
+from tiling_template.configs.reader import XarrayBackendConfig
 from tiling_template.readers.xarray_reader import (
     XarrayBackend,
     XarrayMetadataReader,
@@ -61,9 +62,17 @@ def parse_args() -> argparse.Namespace:
         default=1,
         help="Number of dataset worker processes. Defaults to 1.",
     )
-    parser.add_argument(
-        "--variable",
-        help="Data variable to sample. Omit for a metadata-only check.",
+    variable_selection = parser.add_mutually_exclusive_group()
+    variable_selection.add_argument(
+        "--variables",
+        nargs="+",
+        metavar="NAME",
+        help="Named data variables to sample.",
+    )
+    variable_selection.add_argument(
+        "--all-variables",
+        action="store_true",
+        help="Sample every data variable with the dataset's spatial grid.",
     )
     parser.add_argument(
         "--dimension-index",
@@ -95,6 +104,8 @@ def parse_args() -> argparse.Namespace:
     dimension_names = tuple(name for name, _ in args.dimension_index)
     if len(set(dimension_names)) != len(dimension_names):
         parser.error("--dimension-index names must be unique.")
+    if args.variables and len(set(args.variables)) != len(args.variables):
+        parser.error("--variables names must be unique.")
     return args
 
 
@@ -156,7 +167,8 @@ def sample_windows(
 def inspect_dataset(
     path: Path,
     *,
-    variable_name: str | None,
+    variable_names: tuple[str, ...] | None,
+    all_variables: bool,
     dimension_indices: tuple[tuple[str, int], ...],
     window_size: int,
     windows_per_dataset: int,
@@ -165,7 +177,10 @@ def inspect_dataset(
     started_at = perf_counter()
     messages: list[str] = []
 
-    with XarrayBackend().open(asset) as session:
+    backend = XarrayBackend(
+        XarrayBackendConfig(plugin_modules=("hdf5plugin",))
+    )
+    with backend.open(asset) as session:
         metadata = session.metadata_reader.read_metadata()
         if not metadata.variables:
             raise ValueError("Dataset contains no data variables.")
@@ -184,18 +199,14 @@ def inspect_dataset(
                 f"compression={variable.storage.compression}"
             )
 
-        if variable_name is not None:
-            if variable_name not in session.window_reader.dataset.data_vars:
-                raise ValueError(
-                    f"Variable is not present in the dataset: {variable_name}"
-                )
-            variable = session.window_reader.dataset[variable_name]
+        if variable_names is not None or all_variables:
+            dataset = session.window_reader.dataset
             x_coordinate = XarrayMetadataReader._coordinate_for_axis(
-                session.window_reader.dataset,
+                dataset,
                 "X",
             )
             y_coordinate = XarrayMetadataReader._coordinate_for_axis(
-                session.window_reader.dataset,
+                dataset,
                 "Y",
             )
             if x_coordinate is None or y_coordinate is None:
@@ -203,40 +214,76 @@ def inspect_dataset(
 
             x_dimension = x_coordinate.dims[0]
             y_dimension = y_coordinate.dims[0]
-            if (
-                x_dimension not in variable.dims
-                or y_dimension not in variable.dims
-            ):
+            if all_variables:
+                candidates = tuple(
+                    variable.name for variable in metadata.variables
+                )
+            else:
+                candidates = variable_names or ()
+
+            missing_variables = set(candidates) - set(dataset.data_vars)
+            if missing_variables:
                 raise ValueError(
-                    f"Variable {variable_name!r} has no spatial grid."
+                    "Variables are not present in the dataset: "
+                    f"{sorted(missing_variables)}"
                 )
-            height = variable.sizes[y_dimension]
-            width = variable.sizes[x_dimension]
-            for window in sample_windows(
-                height,
-                width,
-                window_size,
-                windows_per_dataset,
-            ):
-                request = WindowReadRequest(
-                    window=window,
-                    variable_name=variable_name,
-                    dimension_indices=dimension_indices,
+
+            selected_names: list[str] = []
+            for variable_name in candidates:
+                variable = dataset[variable_name]
+                is_spatial = (
+                    x_dimension in variable.dims
+                    and y_dimension in variable.dims
                 )
-                result = session.window_reader.read_window(request)
-                valid_count = (
-                    int(result.valid_mask.sum())
-                    if result.valid_mask is not None
-                    else result.data.size
+                if not is_spatial and all_variables:
+                    messages.append(
+                        f"Skipped non-spatial variable {variable_name}"
+                    )
+                    continue
+                if not is_spatial:
+                    raise ValueError(
+                        f"Variable {variable_name!r} has no spatial grid."
+                    )
+                selected_names.append(variable_name)
+
+            if all_variables and not selected_names:
+                raise ValueError(
+                    "Dataset contains no spatially window-readable variables."
                 )
-                valid_fraction = valid_count / result.data.size
-                messages.append(
-                    f"Read {asset.path.name}:{variable_name} | "
-                    f"offset=({window.row_offset}, "
-                    f"{window.column_offset}) | shape={result.data.shape} | "
-                    f"dtype={result.data.dtype} | "
-                    f"valid={valid_fraction * 100:.2f}%"
-                )
+
+            messages.append(
+                "Window variables: " + ", ".join(selected_names)
+            )
+            for variable_name in selected_names:
+                variable = dataset[variable_name]
+                height = variable.sizes[y_dimension]
+                width = variable.sizes[x_dimension]
+                for window in sample_windows(
+                    height,
+                    width,
+                    window_size,
+                    windows_per_dataset,
+                ):
+                    request = WindowReadRequest(
+                        window=window,
+                        variable_name=variable_name,
+                        dimension_indices=dimension_indices,
+                    )
+                    result = session.window_reader.read_window(request)
+                    valid_count = (
+                        int(result.valid_mask.sum())
+                        if result.valid_mask is not None
+                        else result.data.size
+                    )
+                    valid_fraction = valid_count / result.data.size
+                    messages.append(
+                        f"Read {asset.path.name}:{variable_name} | "
+                        f"offset=({window.row_offset}, "
+                        f"{window.column_offset}) | "
+                        f"shape={result.data.shape} | "
+                        f"dtype={result.data.dtype} | "
+                        f"valid={valid_fraction * 100:.2f}%"
+                    )
 
     messages.append(
         f"Completed {asset.path} in {perf_counter() - started_at:.3f} "
@@ -253,7 +300,8 @@ def log_messages(messages: tuple[str, ...]) -> None:
 def run_serial(
     paths: list[Path],
     *,
-    variable_name: str | None,
+    variable_names: tuple[str, ...] | None,
+    all_variables: bool,
     dimension_indices: tuple[tuple[str, int], ...],
     window_size: int,
     windows_per_dataset: int,
@@ -269,7 +317,8 @@ def run_serial(
             log_messages(
                 inspect_dataset(
                     path,
-                    variable_name=variable_name,
+                    variable_names=variable_names,
+                    all_variables=all_variables,
                     dimension_indices=dimension_indices,
                     window_size=window_size,
                     windows_per_dataset=windows_per_dataset,
@@ -285,7 +334,8 @@ def run_parallel(
     paths: list[Path],
     *,
     workers: int,
-    variable_name: str | None,
+    variable_names: tuple[str, ...] | None,
+    all_variables: bool,
     dimension_indices: tuple[tuple[str, int], ...],
     window_size: int,
     windows_per_dataset: int,
@@ -301,7 +351,8 @@ def run_parallel(
             executor.submit(
                 inspect_dataset,
                 path,
-                variable_name=variable_name,
+                variable_names=variable_names,
+                all_variables=all_variables,
                 dimension_indices=dimension_indices,
                 window_size=window_size,
                 windows_per_dataset=windows_per_dataset,
@@ -339,7 +390,10 @@ def main() -> int:
         if args.workers == 1:
             failures = run_serial(
                 args.datasets,
-                variable_name=args.variable,
+                variable_names=(
+                    tuple(args.variables) if args.variables else None
+                ),
+                all_variables=args.all_variables,
                 dimension_indices=tuple(args.dimension_index),
                 window_size=args.window_size,
                 windows_per_dataset=args.windows_per_dataset,
@@ -348,7 +402,10 @@ def main() -> int:
             failures = run_parallel(
                 args.datasets,
                 workers=args.workers,
-                variable_name=args.variable,
+                variable_names=(
+                    tuple(args.variables) if args.variables else None
+                ),
+                all_variables=args.all_variables,
                 dimension_indices=tuple(args.dimension_index),
                 window_size=args.window_size,
                 windows_per_dataset=args.windows_per_dataset,

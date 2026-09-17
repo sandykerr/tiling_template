@@ -1,6 +1,7 @@
 from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass, field
+from importlib import import_module
 
 import numpy as np
 import xarray as xr
@@ -481,6 +482,15 @@ class XarrayBackend(AssetReaderBackend):
 
     @contextmanager
     def open(self, asset: AssetRef) -> Iterator[AssetReadSession]:
+        for module_name in self.config.plugin_modules:
+            try:
+                import_module(module_name)
+            except ImportError as error:
+                raise ImportError(
+                    "Unable to initialize Xarray plugin module "
+                    f"{module_name!r}."
+                ) from error
+
         with xr.open_dataset(
             asset.path,
             engine=self.config.engine,
