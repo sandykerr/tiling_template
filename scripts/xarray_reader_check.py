@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Run serial, real-data checks against the Xarray reader backend."""
+"""Run real-data checks against the Xarray reader backend."""
 
 import argparse
 import logging
 import sys
+from concurrent.futures import Future, ProcessPoolExecutor, as_completed
+from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
 
@@ -31,7 +33,16 @@ def parse_args() -> argparse.Namespace:
         choices=("DEBUG", "INFO", "WARNING", "ERROR"),
         default="INFO",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Number of dataset worker processes. Defaults to 1.",
+    )
+    args = parser.parse_args()
+    if args.workers <= 0:
+        parser.error("--workers must be positive.")
+    return args
 
 
 def configure_logging(level: str) -> None:
@@ -60,60 +71,102 @@ def asset_ref(path: Path) -> AssetRef:
     )
 
 
-def inspect_dataset(path: Path) -> None:
+def inspect_dataset(path: Path) -> tuple[str, ...]:
     asset = asset_ref(path)
     started_at = perf_counter()
+    messages: list[str] = []
 
     with XarrayBackend().open(asset) as session:
         metadata = session.metadata_reader.read_metadata()
         if not metadata.variables:
             raise ValueError("Dataset contains no data variables.")
 
-        LOGGER.info(
-            "Opened %s | size=%d bytes | variables=%d | crs=%s | "
-            "resolution=%s",
-            asset.path,
-            asset.size_bytes,
-            len(metadata.variables),
-            metadata.crs,
-            metadata.resolution,
+        messages.append(
+            f"Opened {asset.path} | size={asset.size_bytes} bytes | "
+            f"variables={len(metadata.variables)} | crs={metadata.crs} | "
+            f"resolution={metadata.resolution}"
         )
         for variable in metadata.variables:
-            LOGGER.info(
-                "Variable %s | dimensions=%s | shape=%s | dtype=%s | "
-                "chunks=%s | compression=%s",
-                variable.name,
-                variable.dimensions,
-                variable.shape,
-                variable.dtype,
-                variable.storage.chunk_shape,
-                variable.storage.compression,
+            messages.append(
+                f"Variable {variable.name} | "
+                f"dimensions={variable.dimensions} | shape={variable.shape} | "
+                f"dtype={variable.dtype} | "
+                f"chunks={variable.storage.chunk_shape} | "
+                f"compression={variable.storage.compression}"
             )
 
-    LOGGER.info(
-        "Completed %s in %.3f seconds",
-        asset.path,
-        perf_counter() - started_at,
+    messages.append(
+        f"Completed {asset.path} in {perf_counter() - started_at:.3f} "
+        "seconds"
     )
+    return tuple(messages)
+
+
+def log_messages(messages: tuple[str, ...]) -> None:
+    for message in messages:
+        LOGGER.info("%s", message)
+
+
+def run_serial(paths: list[Path]) -> int:
+    failures = 0
+    for path in tqdm(
+        paths,
+        desc="Xarray datasets",
+        unit="dataset",
+        file=sys.stdout,
+    ):
+        try:
+            log_messages(inspect_dataset(path))
+        except Exception:
+            failures += 1
+            LOGGER.exception("Failed dataset: %s", path)
+    return failures
+
+
+def run_parallel(paths: list[Path], workers: int) -> int:
+    failures = 0
+    spawn_context = get_context("spawn")
+
+    with ProcessPoolExecutor(
+        max_workers=workers,
+        mp_context=spawn_context,
+    ) as executor:
+        futures: dict[Future[tuple[str, ...]], Path] = {
+            executor.submit(inspect_dataset, path): path
+            for path in paths
+        }
+        with tqdm(
+            total=len(futures),
+            desc="Xarray datasets",
+            unit="dataset",
+            file=sys.stdout,
+        ) as progress:
+            for future in as_completed(futures):
+                path = futures[future]
+                try:
+                    log_messages(future.result())
+                except Exception:
+                    failures += 1
+                    LOGGER.exception("Failed dataset: %s", path)
+                finally:
+                    progress.update()
+
+    return failures
 
 
 def main() -> int:
     args = parse_args()
     configure_logging(args.log_level)
-    failures = 0
+    LOGGER.info(
+        "Starting Xarray checks with %d worker process(es).",
+        args.workers,
+    )
 
     with logging_redirect_tqdm():
-        for path in tqdm(
-            args.datasets,
-            desc="Xarray datasets",
-            unit="dataset",
-            file=sys.stdout,
-        ):
-            try:
-                inspect_dataset(path)
-            except Exception:
-                failures += 1
-                LOGGER.exception("Failed dataset: %s", path)
+        if args.workers == 1:
+            failures = run_serial(args.datasets)
+        else:
+            failures = run_parallel(args.datasets, args.workers)
 
     if failures:
         LOGGER.error(

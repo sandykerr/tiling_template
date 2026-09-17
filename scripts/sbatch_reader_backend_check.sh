@@ -41,6 +41,10 @@ while [[ $# -gt 0 ]]; do
       PYTHON_ARGS+=("$1")
       shift
       ;;
+    --workers)
+      echo "Worker count is controlled by sbatch --cpus-per-task." >&2
+      exit 2
+      ;;
     *)
       PYTHON_ARGS+=("$1")
       shift
@@ -82,7 +86,14 @@ fi
 cd "${REPO_DIR}"
 mkdir -p scripts/logs
 
-DEFAULT_CONTAINER_PATH="/explore/nobackup/people/ajkerr1/containers/pace-container-arm64"
+WORKERS="${SLURM_CPUS_PER_TASK:-1}"
+if ! [[ "${WORKERS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "SLURM_CPUS_PER_TASK must be a positive integer: ${WORKERS}" >&2
+  exit 1
+fi
+
+CONTAINER_ROOT="/explore/nobackup/people/ajkerr1/containers"
+DEFAULT_CONTAINER_PATH="${CONTAINER_ROOT}/pace-container-arm64"
 CONTAINER_PATH="${CONTAINER_PATH:-${DEFAULT_CONTAINER_PATH}}"
 APPTAINER_BIN="${APPTAINER_BIN:-apptainer}"
 APPTAINER_BIND_PATHS="${APPTAINER_BIND_PATHS:-/panfs/ccds02/nobackup:/explore/nobackup}"
@@ -95,6 +106,7 @@ echo "Partition: ${SLURM_JOB_PARTITION:-grace}"
 echo "Repository: ${REPO_DIR}"
 echo "Container: ${CONTAINER_PATH}"
 echo "Backend: ${BACKEND}"
+echo "Workers: ${WORKERS}"
 echo
 
 "${APPTAINER_BIN}" exec \
@@ -103,7 +115,7 @@ echo
   --pwd "${REPO_DIR}" \
   --env "PYTHONPATH=${CONTAINER_PYTHONPATH}" \
   "${CONTAINER_PATH}" \
-  python -u "${SCRIPT_REL}" "${PYTHON_ARGS[@]}"
+  python -u "${SCRIPT_REL}" "${PYTHON_ARGS[@]}" --workers "${WORKERS}"
 
 END_TIME="$(date +%s)"
 END_READABLE="$(date)"

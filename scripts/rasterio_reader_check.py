@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Run serial, real-data checks against the Rasterio reader backend."""
+"""Run real-data checks against the Rasterio reader backend."""
 
 import argparse
 import logging
 import sys
+from concurrent.futures import Future, ProcessPoolExecutor, as_completed
+from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
 
@@ -50,6 +52,12 @@ def parse_args() -> argparse.Namespace:
         choices=("DEBUG", "INFO", "WARNING", "ERROR"),
         default="INFO",
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Number of dataset worker processes. Defaults to 1.",
+    )
     args = parser.parse_args()
 
     if args.window_size <= 0:
@@ -60,6 +68,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--bands must contain one-based positive integers.")
     if len(set(args.bands)) != len(args.bands):
         parser.error("--bands cannot contain duplicates.")
+    if args.workers <= 0:
+        parser.error("--workers must be positive.")
 
     return args
 
@@ -126,9 +136,10 @@ def inspect_dataset(
     window_size: int,
     windows_per_dataset: int,
     bands: tuple[int, ...],
-) -> None:
+) -> tuple[str, ...]:
     asset = asset_ref(path)
     started_at = perf_counter()
+    messages: list[str] = []
 
     with RasterioBackend().open(asset) as session:
         metadata = session.metadata_reader.read_metadata()
@@ -137,17 +148,11 @@ def inspect_dataset(
 
         first_variable = metadata.variables[0]
         height, width = first_variable.shape
-        LOGGER.info(
-            "Opened %s | size=%d bytes | shape=%sx%s | bands=%d | "
-            "dtype=%s | crs=%s | tiled=%s",
-            asset.path,
-            asset.size_bytes,
-            height,
-            width,
-            len(metadata.variables),
-            first_variable.dtype,
-            metadata.crs,
-            metadata.is_tiled,
+        messages.append(
+            f"Opened {asset.path} | size={asset.size_bytes} bytes | "
+            f"shape={height}x{width} | bands={len(metadata.variables)} | "
+            f"dtype={first_variable.dtype} | crs={metadata.crs} | "
+            f"tiled={metadata.is_tiled}"
         )
 
         windows = sample_windows(
@@ -156,13 +161,7 @@ def inspect_dataset(
             window_size,
             windows_per_dataset,
         )
-        for window in tqdm(
-            windows,
-            desc=f"Windows: {asset.path.name}",
-            unit="window",
-            leave=False,
-            file=sys.stdout,
-        ):
+        for window in windows:
             request = WindowReadRequest(
                 window=window,
                 source_indices=bands,
@@ -174,46 +173,122 @@ def inspect_dataset(
                 else result.data.size
             )
             valid_fraction = valid_count / result.data.size
-            LOGGER.info(
-                "Read %s | offset=(%d, %d) | shape=%s | dtype=%s | "
-                "valid=%.2f%%",
-                asset.path.name,
-                window.row_offset,
-                window.column_offset,
-                result.data.shape,
-                result.data.dtype,
-                valid_fraction * 100,
+            messages.append(
+                f"Read {asset.path.name} | "
+                f"offset=({window.row_offset}, {window.column_offset}) | "
+                f"shape={result.data.shape} | dtype={result.data.dtype} | "
+                f"valid={valid_fraction * 100:.2f}%"
             )
 
-    LOGGER.info(
-        "Completed %s in %.3f seconds",
-        asset.path,
-        perf_counter() - started_at,
+    messages.append(
+        f"Completed {asset.path} in {perf_counter() - started_at:.3f} "
+        "seconds"
     )
+    return tuple(messages)
+
+
+def log_messages(messages: tuple[str, ...]) -> None:
+    for message in messages:
+        LOGGER.info("%s", message)
+
+
+def run_serial(
+    paths: list[Path],
+    *,
+    window_size: int,
+    windows_per_dataset: int,
+    bands: tuple[int, ...],
+) -> int:
+    failures = 0
+    for path in tqdm(
+        paths,
+        desc="Rasterio datasets",
+        unit="dataset",
+        file=sys.stdout,
+    ):
+        try:
+            log_messages(
+                inspect_dataset(
+                    path,
+                    window_size=window_size,
+                    windows_per_dataset=windows_per_dataset,
+                    bands=bands,
+                )
+            )
+        except Exception:
+            failures += 1
+            LOGGER.exception("Failed dataset: %s", path)
+    return failures
+
+
+def run_parallel(
+    paths: list[Path],
+    *,
+    workers: int,
+    window_size: int,
+    windows_per_dataset: int,
+    bands: tuple[int, ...],
+) -> int:
+    failures = 0
+    spawn_context = get_context("spawn")
+
+    with ProcessPoolExecutor(
+        max_workers=workers,
+        mp_context=spawn_context,
+    ) as executor:
+        futures: dict[Future[tuple[str, ...]], Path] = {
+            executor.submit(
+                inspect_dataset,
+                path,
+                window_size=window_size,
+                windows_per_dataset=windows_per_dataset,
+                bands=bands,
+            ): path
+            for path in paths
+        }
+        with tqdm(
+            total=len(futures),
+            desc="Rasterio datasets",
+            unit="dataset",
+            file=sys.stdout,
+        ) as progress:
+            for future in as_completed(futures):
+                path = futures[future]
+                try:
+                    log_messages(future.result())
+                except Exception:
+                    failures += 1
+                    LOGGER.exception("Failed dataset: %s", path)
+                finally:
+                    progress.update()
+
+    return failures
 
 
 def main() -> int:
     args = parse_args()
     configure_logging(args.log_level)
-    failures = 0
+    LOGGER.info(
+        "Starting Rasterio checks with %d worker process(es).",
+        args.workers,
+    )
 
     with logging_redirect_tqdm():
-        for path in tqdm(
-            args.datasets,
-            desc="Rasterio datasets",
-            unit="dataset",
-            file=sys.stdout,
-        ):
-            try:
-                inspect_dataset(
-                    path,
-                    window_size=args.window_size,
-                    windows_per_dataset=args.windows_per_dataset,
-                    bands=tuple(args.bands),
-                )
-            except Exception:
-                failures += 1
-                LOGGER.exception("Failed dataset: %s", path)
+        if args.workers == 1:
+            failures = run_serial(
+                args.datasets,
+                window_size=args.window_size,
+                windows_per_dataset=args.windows_per_dataset,
+                bands=tuple(args.bands),
+            )
+        else:
+            failures = run_parallel(
+                args.datasets,
+                workers=args.workers,
+                window_size=args.window_size,
+                windows_per_dataset=args.windows_per_dataset,
+                bands=tuple(args.bands),
+            )
 
     if failures:
         LOGGER.error(
