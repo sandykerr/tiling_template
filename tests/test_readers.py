@@ -1,14 +1,24 @@
 import tempfile
 import unittest
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import FrozenInstanceError
 from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 import rasterio
 from rasterio.enums import Resampling
+from rasterio.errors import RasterioIOError
 from rasterio.transform import from_origin
 import xarray as xr
 
+from tiling_template.configs.reader import (
+    RasterioBackendConfig,
+    XarrayBackendConfig,
+)
 from tiling_template.readers import (
+    AssetReadSession,
     AssetReaderBackend,
     MetadataReader,
     ReaderRegistry,
@@ -16,14 +26,23 @@ from tiling_template.readers import (
     default_reader_registry,
 )
 from tiling_template.readers.rasterio_reader import (
+    RasterioBackend,
     RasterioMetadataReader,
     RasterioWindowReader,
 )
 from tiling_template.readers.xarray_reader import (
+    XarrayBackend,
     XarrayMetadataReader,
     XarrayWindowReader,
 )
-from tiling_template.records import AssetMetadata, AssetRef, VariableMetadata
+from tiling_template.records import (
+    AssetMetadata,
+    AssetRef,
+    PixelWindow,
+    VariableMetadata,
+    WindowReadRequest,
+    WindowReadResult,
+)
 
 
 def make_asset(filename: str) -> AssetRef:
@@ -39,10 +58,25 @@ def make_asset(filename: str) -> AssetRef:
     )
 
 
+def make_window_request() -> WindowReadRequest:
+    return WindowReadRequest(
+        window=PixelWindow(
+            row_offset=0,
+            column_offset=0,
+            height=1,
+            width=1,
+        ),
+        source_indices=(1,),
+    )
+
+
 class FakeMetadataReader(MetadataReader):
-    def read_metadata(self, asset: AssetRef) -> AssetMetadata:
+    def __init__(self, asset: AssetRef):
+        self.asset = asset
+
+    def read_metadata(self) -> AssetMetadata:
         return AssetMetadata(
-            asset=asset,
+            asset=self.asset,
             variables=(
                 VariableMetadata(
                     name="band_1",
@@ -56,26 +90,36 @@ class FakeMetadataReader(MetadataReader):
 
 
 class FakeWindowReader(WindowReader):
-    def read_window(self, asset: AssetRef) -> np.ndarray:
-        return np.zeros((1, 1), dtype=np.uint8)
+    def __init__(self, asset: AssetRef):
+        self.asset = asset
+
+    def read_window(self, request: WindowReadRequest) -> WindowReadResult:
+        data = np.zeros((1, 1, 1), dtype=np.uint8)
+        return WindowReadResult(
+            data=data,
+            valid_mask=np.ones_like(data, dtype=np.bool_),
+            transform=(1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0),
+            request=request,
+        )
 
 
 class AlternateMetadataReader(FakeMetadataReader):
     pass
 
 
-def fake_backend() -> AssetReaderBackend:
-    return AssetReaderBackend(
-        metadata_reader=FakeMetadataReader(),
-        window_reader=FakeWindowReader(),
-    )
+class FakeBackend(AssetReaderBackend):
+    metadata_reader_class = FakeMetadataReader
+
+    @contextmanager
+    def open(self, asset: AssetRef) -> Iterator[AssetReadSession]:
+        yield AssetReadSession(
+            metadata_reader=self.metadata_reader_class(asset),
+            window_reader=FakeWindowReader(asset),
+        )
 
 
-def alternate_backend() -> AssetReaderBackend:
-    return AssetReaderBackend(
-        metadata_reader=AlternateMetadataReader(),
-        window_reader=FakeWindowReader(),
-    )
+class AlternateBackend(FakeBackend):
+    metadata_reader_class = AlternateMetadataReader
 
 
 class TestReaderInterfaces(unittest.TestCase):
@@ -87,10 +131,15 @@ class TestReaderInterfaces(unittest.TestCase):
         with self.assertRaises(TypeError):
             WindowReader()
 
+    def test_abstract_backend_cannot_be_instantiated(self):
+        with self.assertRaises(TypeError):
+            AssetReaderBackend()
+
     def test_reader_returns_current_metadata_record_shape(self):
         asset = make_asset("scene.tif")
 
-        metadata = FakeMetadataReader().read_metadata(asset)
+        with FakeBackend().open(asset) as session:
+            metadata = session.metadata_reader.read_metadata()
 
         self.assertIs(metadata.asset, asset)
         self.assertEqual(metadata.variables[0].name, "band_1")
@@ -100,74 +149,79 @@ class TestReaderInterfaces(unittest.TestCase):
 class TestReaderRegistry(unittest.TestCase):
     def test_constructs_reader_for_each_registered_extension(self):
         registry = ReaderRegistry()
-        registry.register((".tif", ".tiff"), fake_backend)
+        registry.register((".tif", ".tiff"), FakeBackend)
 
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.tif")).metadata_reader,
-            FakeMetadataReader,
+            registry.backend_for(make_asset("scene.tif")),
+            FakeBackend,
         )
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.tiff")).window_reader,
-            FakeWindowReader,
+            registry.backend_for(make_asset("scene.tiff")),
+            FakeBackend,
         )
 
     def test_normalizes_case_whitespace_and_leading_period(self):
         registry = ReaderRegistry()
-        registry.register((" TIF ",), fake_backend)
+        registry.register((" TIF ",), FakeBackend)
 
         backend = registry.backend_for(make_asset("scene.TIF"))
 
-        self.assertIsInstance(backend.metadata_reader, FakeMetadataReader)
+        self.assertIsInstance(backend, FakeBackend)
 
     def test_creates_a_new_reader_for_each_lookup(self):
         registry = ReaderRegistry()
-        registry.register((".tif",), fake_backend)
+        registry.register((".tif",), FakeBackend)
         asset = make_asset("scene.tif")
 
         first = registry.backend_for(asset)
         second = registry.backend_for(asset)
 
         self.assertIsNot(first, second)
-        self.assertIsNot(first.metadata_reader, second.metadata_reader)
-        self.assertIsNot(first.window_reader, second.window_reader)
+
+    def test_session_readers_are_bound_to_the_requested_asset(self):
+        asset = make_asset("scene.tif")
+
+        with FakeBackend().open(asset) as session:
+            self.assertIs(session.metadata_reader.asset, asset)
+            self.assertIs(session.window_reader.asset, asset)
 
     def test_rejects_empty_extension_collection(self):
         registry = ReaderRegistry()
 
         with self.assertRaisesRegex(ValueError, "At least one"):
-            registry.register((), fake_backend)
+            registry.register((), FakeBackend)
 
     def test_rejects_blank_extension(self):
         registry = ReaderRegistry()
 
         with self.assertRaisesRegex(ValueError, "cannot be empty"):
-            registry.register(("  ",), fake_backend)
+            registry.register(("  ",), FakeBackend)
 
     def test_rejects_duplicate_normalized_extensions(self):
         registry = ReaderRegistry()
 
         with self.assertRaisesRegex(ValueError, "must be unique"):
-            registry.register(("tif", ".TIF"), fake_backend)
+            registry.register(("tif", ".TIF"), FakeBackend)
 
     def test_rejects_an_extension_registered_by_another_reader(self):
         registry = ReaderRegistry()
-        registry.register((".tif",), fake_backend)
+        registry.register((".tif",), FakeBackend)
 
         with self.assertRaisesRegex(ValueError, "already registered"):
-            registry.register((".TIF",), alternate_backend)
+            registry.register((".TIF",), AlternateBackend)
 
     def test_conflicting_registration_is_atomic(self):
         registry = ReaderRegistry()
-        registry.register((".tif",), fake_backend)
+        registry.register((".tif",), FakeBackend)
 
         with self.assertRaises(ValueError):
-            registry.register((".nc", ".tif"), alternate_backend)
+            registry.register((".nc", ".tif"), AlternateBackend)
 
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.tif")).metadata_reader,
-            FakeMetadataReader,
+            registry.backend_for(make_asset("scene.tif")),
+            FakeBackend,
         )
-        with self.assertRaisesRegex(ValueError, "No reader is registered"):
+        with self.assertRaisesRegex(ValueError, "No backend is registered"):
             registry.backend_for(make_asset("scene.nc"))
 
     def test_rejects_unregistered_extension(self):
@@ -188,25 +242,47 @@ class TestDefaultReaderRegistry(unittest.TestCase):
         registry = default_reader_registry()
 
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.tif")).metadata_reader,
-            RasterioMetadataReader,
+            registry.backend_for(make_asset("scene.tif")),
+            RasterioBackend,
         )
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.tiff")).window_reader,
-            RasterioWindowReader,
+            registry.backend_for(make_asset("scene.tiff")),
+            RasterioBackend,
         )
 
     def test_registers_xarray_for_netcdf_extension(self):
         registry = default_reader_registry()
 
         self.assertIsInstance(
-            registry.backend_for(make_asset("scene.nc")).metadata_reader,
-            XarrayMetadataReader,
+            registry.backend_for(make_asset("scene.nc")),
+            XarrayBackend,
         )
-        self.assertIsInstance(
-            registry.backend_for(make_asset("scene.nc")).window_reader,
-            XarrayWindowReader,
+
+
+class TestBackendConfigs(unittest.TestCase):
+    def test_rasterio_config_is_frozen_and_validates_options(self):
+        config = RasterioBackendConfig(
+            sharing=True,
+            gdal_options=(("GDAL_CACHEMAX", 64_000_000),),
         )
+
+        self.assertEqual(
+            config.options_dict(),
+            {"GDAL_CACHEMAX": 64_000_000},
+        )
+        with self.assertRaises(FrozenInstanceError):
+            config.sharing = False
+
+        with self.assertRaisesRegex(ValueError, "must be unique"):
+            RasterioBackendConfig(
+                gdal_options=(("OPTION", 1), ("OPTION", 2)),
+            )
+
+    def test_xarray_config_is_frozen(self):
+        config = XarrayBackendConfig(engine="netcdf4", group="observations")
+
+        with self.assertRaises(FrozenInstanceError):
+            config.engine = None
 
 
 class TestRasterioReaders(unittest.TestCase):
@@ -231,9 +307,9 @@ class TestRasterioReaders(unittest.TestCase):
             blockysize=16,
             compress="deflate",
         ) as dataset:
-            dataset.write(
-                np.arange(12, dtype=np.uint16).reshape(2, 2, 3)
-            )
+            values = np.arange(12, dtype=np.uint16).reshape(2, 2, 3)
+            values[0, 1, 1] = 999
+            dataset.write(values)
             dataset.set_band_description(1, "red")
             dataset.scales = (0.1, 1.0)
             dataset.offsets = (1.0, 0.0)
@@ -257,7 +333,19 @@ class TestRasterioReaders(unittest.TestCase):
         self.temporary_directory.cleanup()
 
     def test_reads_asset_and_per_band_metadata(self):
-        metadata = RasterioMetadataReader().read_metadata(self.asset)
+        backend = RasterioBackend()
+
+        with backend.open(self.asset) as session:
+            metadata_reader = session.metadata_reader
+            window_reader = session.window_reader
+            self.assertIsInstance(metadata_reader, RasterioMetadataReader)
+            self.assertIsInstance(window_reader, RasterioWindowReader)
+            self.assertIs(metadata_reader.dataset, window_reader.dataset)
+            dataset = metadata_reader.dataset
+            self.assertFalse(dataset.closed)
+            metadata = metadata_reader.read_metadata()
+
+        self.assertTrue(dataset.closed)
 
         self.assertIs(metadata.asset, self.asset)
         self.assertEqual(metadata.crs, "EPSG:4326")
@@ -286,9 +374,158 @@ class TestRasterioReaders(unittest.TestCase):
         self.assertEqual(second.name, "band_2")
         self.assertEqual(second.source_index, 2)
 
-    def test_window_read_explicitly_reports_not_implemented(self):
-        with self.assertRaisesRegex(NotImplementedError, "window reading"):
-            RasterioWindowReader().read_window(self.asset)
+    def test_reads_selected_bands_in_requested_order(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 1, 2, 2),
+            source_indices=(2, 1),
+        )
+
+        with RasterioBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array(
+                [
+                    [[7, 8], [10, 11]],
+                    [[1, 2], [999, 5]],
+                ],
+                dtype=np.uint16,
+            ),
+        )
+        np.testing.assert_array_equal(
+            result.valid_mask,
+            np.array(
+                [
+                    [[True, True], [True, True]],
+                    [[True, True], [False, True]],
+                ]
+            ),
+        )
+        self.assertEqual(
+            result.transform,
+            tuple(from_origin(12, 20, 2, 2)),
+        )
+        self.assertIs(result.request, request)
+
+    def test_defaults_to_all_bands(self):
+        request = WindowReadRequest(window=PixelWindow(0, 0, 1, 1))
+
+        with RasterioBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array([[[0]], [[6]]], dtype=np.uint16),
+        )
+        self.assertEqual(result.data.shape, (2, 1, 1))
+
+    def test_boundless_read_pads_data_and_marks_padding_invalid(self):
+        request = WindowReadRequest(
+            window=PixelWindow(-1, -1, 3, 3),
+            source_indices=(1,),
+            boundless=True,
+            fill_value=77,
+        )
+
+        with RasterioBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array(
+                [
+                    [
+                        [77, 77, 77],
+                        [77, 0, 1],
+                        [77, 3, 999],
+                    ]
+                ],
+                dtype=np.uint16,
+            ),
+        )
+        np.testing.assert_array_equal(
+            result.valid_mask,
+            np.array(
+                [
+                    [
+                        [False, False, False],
+                        [False, True, True],
+                        [False, True, False],
+                    ]
+                ]
+            ),
+        )
+        self.assertEqual(
+            result.transform,
+            tuple(from_origin(8, 22, 2, 2)),
+        )
+
+    def test_rejects_out_of_bounds_window_without_boundless_reading(self):
+        request = WindowReadRequest(
+            window=PixelWindow(-1, 0, 2, 2),
+        )
+
+        with RasterioBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "boundless=True"):
+                session.window_reader.read_window(request)
+
+    def test_rejects_source_index_missing_from_dataset(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            source_indices=(3,),
+        )
+
+        with RasterioBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, r"\[3\]"):
+                session.window_reader.read_window(request)
+
+    def test_backend_applies_config_and_reuses_one_open_handle(self):
+        config = RasterioBackendConfig(
+            sharing=True,
+            gdal_options=(("GDAL_CACHEMAX", 64_000_000),),
+        )
+        backend = RasterioBackend(config)
+
+        with patch(
+            "tiling_template.readers.rasterio_reader.rasterio.open",
+            wraps=rasterio.open,
+        ) as open_mock:
+            with backend.open(self.asset) as session:
+                self.assertEqual(
+                    rasterio.env.getenv()["GDAL_CACHEMAX"],
+                    64_000_000,
+                )
+                first = session.metadata_reader.read_metadata()
+                second = session.metadata_reader.read_metadata()
+                first_window = session.window_reader.read_window(
+                    make_window_request()
+                )
+                second_window = session.window_reader.read_window(
+                    make_window_request()
+                )
+
+        open_mock.assert_called_once_with(self.asset.path, sharing=True)
+        self.assertEqual(first, second)
+        np.testing.assert_array_equal(first_window.data, second_window.data)
+
+    def test_session_closes_dataset_after_exception(self):
+        dataset = None
+
+        with self.assertRaisesRegex(RuntimeError, "worker failure"):
+            with RasterioBackend().open(self.asset) as session:
+                dataset = session.metadata_reader.dataset
+                raise RuntimeError("worker failure")
+
+        self.assertIsNotNone(dataset)
+        self.assertTrue(dataset.closed)
+
+    def test_window_reader_cannot_read_after_session_closes(self):
+        with RasterioBackend().open(self.asset) as session:
+            window_reader = session.window_reader
+
+        with self.assertRaisesRegex(RasterioIOError, "closed"):
+            window_reader.read_window(make_window_request())
 
 
 class TestXarrayReaders(unittest.TestCase):
@@ -363,7 +600,17 @@ class TestXarrayReaders(unittest.TestCase):
         self.temporary_directory.cleanup()
 
     def test_reads_netcdf_asset_and_variable_metadata(self):
-        metadata = XarrayMetadataReader().read_metadata(self.asset)
+        with XarrayBackend().open(self.asset) as session:
+            self.assertIsInstance(
+                session.metadata_reader,
+                XarrayMetadataReader,
+            )
+            self.assertIsInstance(session.window_reader, XarrayWindowReader)
+            self.assertIs(
+                session.metadata_reader.dataset,
+                session.window_reader.dataset,
+            )
+            metadata = session.metadata_reader.read_metadata()
 
         self.assertIs(metadata.asset, self.asset)
         self.assertEqual(metadata.crs, "EPSG:4326")
@@ -415,15 +662,39 @@ class TestXarrayReaders(unittest.TestCase):
         dataset.to_netcdf(path, engine="netcdf4")
         dataset.close()
 
-        metadata = XarrayMetadataReader().read_metadata(make_asset(str(path)))
+        with XarrayBackend().open(make_asset(str(path))) as session:
+            metadata = session.metadata_reader.read_metadata()
 
         self.assertIsNone(metadata.transform)
         self.assertIsNone(metadata.bounds)
         self.assertIsNone(metadata.resolution)
 
     def test_window_read_explicitly_reports_not_implemented(self):
-        with self.assertRaisesRegex(NotImplementedError, "window reading"):
-            XarrayWindowReader().read_window(self.asset)
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(NotImplementedError, "window reading"):
+                session.window_reader.read_window(make_window_request())
+
+    def test_backend_applies_config_and_reuses_one_open_dataset(self):
+        config = XarrayBackendConfig(engine="netcdf4")
+        backend = XarrayBackend(config)
+
+        with patch(
+            "tiling_template.readers.xarray_reader.xr.open_dataset",
+            wraps=xr.open_dataset,
+        ) as open_mock:
+            with backend.open(self.asset) as session:
+                first = session.metadata_reader.read_metadata()
+                second = session.metadata_reader.read_metadata()
+
+        open_mock.assert_called_once_with(
+            self.asset.path,
+            engine="netcdf4",
+            group=None,
+            decode_cf=False,
+            mask_and_scale=False,
+            cache=False,
+        )
+        self.assertEqual(first, second)
 
 
 if __name__ == "__main__":

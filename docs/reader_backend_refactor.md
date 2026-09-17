@@ -159,11 +159,16 @@ and boundary conventions. A starting shape is:
 
 ```python
 @dataclass(frozen=True, slots=True)
-class WindowReadRequest:
+class PixelWindow:
     row_offset: int
     column_offset: int
     height: int
     width: int
+
+
+@dataclass(frozen=True, slots=True)
+class WindowReadRequest:
+    window: PixelWindow
     source_indices: tuple[int, ...] | None = None
     boundless: bool = False
     fill_value: int | float | None = None
@@ -190,8 +195,12 @@ class WindowReadResult:
     data: NDArray[np.generic]
     valid_mask: NDArray[np.bool_] | None
     transform: tuple[float, ...]
-    source_window: PixelWindow
+    request: WindowReadRequest
 ```
+
+When present, `valid_mask` has the same shape as `data` and represents
+per-element validity. A clipped `source_window` can be added later if
+boundless edge handling needs to distinguish requested and intersecting areas.
 
 ### 9. Implement the Rasterio window reader first
 
@@ -259,11 +268,27 @@ Rasterio already reads and caches the underlying TIFF blocks required for a
 window. Do not implement custom block alignment or caching until measurements
 show a meaningful benefit.
 
-## Immediate Scope
+## Implementation Status
 
-The immediate refactor should complete steps 1 through 6: establish the
-backend/session lifecycle and adapt the working metadata readers without
-changing their metadata behavior.
+Steps 1 through 9 are implemented for the large-GeoTIFF path. Rasterio uses
+one worker-local handle for metadata and repeated window reads. Window reads
+are band-first, preserve requested band order, return a per-element validity
+mask, and report the transform of the requested half-open pixel window.
 
-After that, design `WindowReadRequest` and `WindowReadResult` before adding
-concrete window reading.
+Non-boundless reads must be fully contained by the source. Boundless reads
+preserve the requested output shape, use the configured fill value outside
+the source, and mark padded elements invalid.
+
+Step 10 is an orchestration concern: future workers should group work by
+source or source batch and use `ExitStack` for multimodal sources. The reader
+API already supports that lifecycle; no multiprocessing policy belongs in the
+reader package itself.
+
+Synthetic tests cover the lifecycle and window behavior listed in step 11,
+except the separate-process integration case. Representative real-data,
+multiprocessing, and performance tests from steps 11 and 12 remain to be
+designed against actual project workloads.
+
+Xarray window reading remains intentionally unimplemented. A useful NetCDF
+request must select named variables and non-spatial dimensions; Rasterio's
+one-based `source_indices` contract is not sufficient for that API.

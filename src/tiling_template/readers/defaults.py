@@ -2,16 +2,16 @@ from .base import ReaderRegistry
 
 
 def default_reader_registry() -> ReaderRegistry:
-    from .rasterio_reader import rasterio_backend
-    from .xarray_reader import xarray_backend
+    from .rasterio_reader import RasterioBackend
+    from .xarray_reader import XarrayBackend
 
     registry = ReaderRegistry()
     registry.register(
         (".tif", ".tiff"),
-        rasterio_backend,
+        RasterioBackend,
     )
     registry.register(
         (".nc",),
-        xarray_backend,
+        XarrayBackend,
     )
     return registry

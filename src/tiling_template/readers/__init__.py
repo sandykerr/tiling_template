@@ -1,4 +1,5 @@
 from .base import (
+    AssetReadSession,
     AssetReaderBackend,
     MetadataReader,
     ReaderRegistry,
@@ -7,6 +8,7 @@ from .base import (
 from .defaults import default_reader_registry
 
 __all__ = [
+    "AssetReadSession",
     "AssetReaderBackend",
     "MetadataReader",
     "ReaderRegistry",

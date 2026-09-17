@@ -1,18 +1,21 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
+from contextlib import AbstractContextManager
 from dataclasses import dataclass
 
-import numpy as np
-from numpy.typing import NDArray
-
-from ..records import AssetRef, AssetMetadata
+from ..records import (
+    AssetMetadata,
+    AssetRef,
+    WindowReadRequest,
+    WindowReadResult,
+)
 
 
 class MetadataReader(ABC):
     """Read normalized metadata from an asset."""
 
     @abstractmethod
-    def read_metadata(self, asset: AssetRef) -> AssetMetadata:
+    def read_metadata(self) -> AssetMetadata:
         """Read metadata from asset without loading data values."""
         ...
 
@@ -21,17 +24,32 @@ class WindowReader(ABC):
     """Read array windows from an asset."""
 
     @abstractmethod
-    def read_window(self, asset: AssetRef) -> NDArray[np.generic]:
+    def read_window(
+        self,
+        request: WindowReadRequest,
+    ) -> WindowReadResult:
         """Read a spatial window for selected indices (dimensions)."""
         ...
 
 
 @dataclass(frozen=True, slots=True)
-class AssetReaderBackend:
-    """Compose the metadata and window readers for one file backend."""
+class AssetReadSession:
+    """Expose readers bound to one open asset resource."""
 
     metadata_reader: MetadataReader
     window_reader: WindowReader
+
+
+class AssetReaderBackend(ABC):
+    """Open worker-local read sessions for supported assets."""
+
+    @abstractmethod
+    def open(
+        self,
+        asset: AssetRef,
+    ) -> AbstractContextManager[AssetReadSession]:
+        """Open an asset and return a context-managed reader session."""
+        ...
 
 
 BackendFactory = Callable[[], AssetReaderBackend]
@@ -94,7 +112,7 @@ class ReaderRegistry:
             factory = self._factories[extension]
         except KeyError:
             raise ValueError(
-                f"No reader is registered for: {extension}"
+                f"No backend is registered for: {extension}"
             ) from None
 
         return factory()

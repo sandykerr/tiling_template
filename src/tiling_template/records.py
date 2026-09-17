@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TypeAlias, Mapping
+from numpy.typing import NDArray
+import numpy as np
 
 from .types import AssetRole
 
@@ -82,3 +84,60 @@ class AssetMetadata:
     resolution: tuple[float, ...] | None = None
     is_tiled: bool | None = None
     attributes: Mapping[str, object] = field(default_factory=dict)
+
+
+@dataclass(frozen=True, slots=True)
+class PixelWindow:
+    """Describe a half-open window in integer pixel coordinates."""
+
+    row_offset: int
+    column_offset: int
+    height: int
+    width: int
+
+    def __post_init__(self) -> None:
+        if self.height <= 0 or self.width <= 0:
+            raise ValueError(
+                "Pixel window height and width must be positive."
+            )
+
+
+@dataclass(frozen=True, slots=True)
+class WindowReadRequest:
+    """Describe one pixel-window read from an open asset."""
+
+    window: PixelWindow
+    source_indices: tuple[int, ...] | None = None
+    boundless: bool = False
+    fill_value: int | float | None = None
+
+    def __post_init__(self) -> None:
+        if self.source_indices is None:
+            return
+        if not self.source_indices:
+            raise ValueError("source_indices cannot be empty.")
+        if any(index < 1 for index in self.source_indices):
+            raise ValueError(
+                "Raster source indices must be one-based positive integers."
+            )
+        if len(set(self.source_indices)) != len(self.source_indices):
+            raise ValueError("source_indices must be unique.")
+
+
+@dataclass(frozen=True, slots=True)
+class WindowReadResult:
+    """Contain one window read and an optional per-element validity mask."""
+
+    data: NDArray[np.generic]
+    valid_mask: NDArray[np.bool_] | None
+    transform: tuple[float, ...]
+    request: WindowReadRequest
+
+    def __post_init__(self) -> None:
+        if (
+            self.valid_mask is not None
+            and self.valid_mask.shape != self.data.shape
+        ):
+            raise ValueError(
+                "valid_mask must have the same shape as data."
+            )

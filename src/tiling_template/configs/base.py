@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .types import AssetRole
+from ..types import AssetRole
 
 
 @dataclass(frozen=True, slots=True)
@@ -10,7 +10,7 @@ class SplitConfig:
 
 @dataclass(frozen=True, slots=True)
 class ModalityAssociationConfig:
-    """Represents the configuration for a single modality association."""
+    """Represent the cardinality required for one role and modality."""
 
     role: AssetRole
     modality: str
@@ -28,7 +28,7 @@ class ModalityAssociationConfig:
                 raise ValueError(
                     "Modality maximum_count cannot be negative."
                 )
-            elif self.maximum_count < self.minimum_count:
+            if self.maximum_count < self.minimum_count:
                 raise ValueError(
                     "Modality maximum_count cannot be less than minimum_count."
                 )
@@ -36,8 +36,6 @@ class ModalityAssociationConfig:
 
 @dataclass(frozen=True, slots=True)
 class DataConfig:
-    """
-    Large pipeline-wide data configuration object.
-    Composes multiple other configuration objects.
-    """
+    """Compose pipeline-wide data configuration."""
+
     supervised: bool = True

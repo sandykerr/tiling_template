@@ -1,22 +1,33 @@
-from dataclasses import dataclass
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
+from contextlib import contextmanager
+from dataclasses import dataclass, field
 
 import numpy as np
-from numpy.typing import NDArray
 import xarray as xr
 
-from .base import AssetReaderBackend, MetadataReader, WindowReader
+from ..configs.reader import XarrayBackendConfig
+from .base import (
+    AssetReadSession,
+    AssetReaderBackend,
+    MetadataReader,
+    WindowReader,
+)
 from ..records import (
     AssetMetadata,
     AssetRef,
     VariableMetadata,
     VariableStorageMetadata,
+    WindowReadRequest,
+    WindowReadResult,
 )
 
 
 @dataclass(frozen=True, slots=True)
 class XarrayMetadataReader(MetadataReader):
     """Read metadata from NetCDF-style xarray datasets."""
+
+    asset: AssetRef
+    dataset: xr.Dataset
 
     @staticmethod
     def _nodata_value(variable: xr.DataArray) -> int | float | None:
@@ -235,63 +246,79 @@ class XarrayMetadataReader(MetadataReader):
         resolution = (abs(x_step), abs(y_step))
         return transform, bounds, resolution
 
-    def read_metadata(self, asset: AssetRef) -> AssetMetadata:
-        with xr.open_dataset(
-            asset.path,
-            decode_cf=False,
-            mask_and_scale=False,
-            cache=False,
-        ) as dataset:
-            grid_mapping_names = self._grid_mapping_names(dataset)
-            variables = tuple(
-                VariableMetadata(
-                    name=str(name),
-                    shape=tuple(int(size) for size in variable.shape),
-                    dimensions=tuple(
-                        str(dimension) for dimension in variable.dims
-                    ),
-                    dtype=str(variable.dtype),
-                    nodata=self._nodata_value(variable),
-                    scale=self._numeric_metadata(variable, "scale_factor"),
-                    offset=self._numeric_metadata(variable, "add_offset"),
-                    unit=(
-                        str(variable.attrs["units"])
-                        if variable.attrs.get("units") is not None
-                        else None
-                    ),
-                    attributes=dict(variable.attrs),
-                    storage=self._storage_metadata(variable),
-                )
-                for name, variable in dataset.data_vars.items()
-                if name not in grid_mapping_names
+    def read_metadata(self) -> AssetMetadata:
+        dataset = self.dataset
+        grid_mapping_names = self._grid_mapping_names(dataset)
+        variables = tuple(
+            VariableMetadata(
+                name=str(name),
+                shape=tuple(int(size) for size in variable.shape),
+                dimensions=tuple(
+                    str(dimension) for dimension in variable.dims
+                ),
+                dtype=str(variable.dtype),
+                nodata=self._nodata_value(variable),
+                scale=self._numeric_metadata(variable, "scale_factor"),
+                offset=self._numeric_metadata(variable, "add_offset"),
+                unit=(
+                    str(variable.attrs["units"])
+                    if variable.attrs.get("units") is not None
+                    else None
+                ),
+                attributes=dict(variable.attrs),
+                storage=self._storage_metadata(variable),
             )
-            transform, bounds, resolution = self._spatial_metadata(dataset)
+            for name, variable in dataset.data_vars.items()
+            if name not in grid_mapping_names
+        )
+        transform, bounds, resolution = self._spatial_metadata(dataset)
 
-            return AssetMetadata(
-                asset=asset,
-                variables=variables,
-                crs=self._crs(dataset),
-                transform=transform,
-                bounds=bounds,
-                resolution=resolution,
-                attributes=dict(dataset.attrs),
-            )
+        return AssetMetadata(
+            asset=self.asset,
+            variables=variables,
+            crs=self._crs(dataset),
+            transform=transform,
+            bounds=bounds,
+            resolution=resolution,
+            attributes=dict(dataset.attrs),
+        )
 
 
 @dataclass(frozen=True, slots=True)
 class XarrayWindowReader(WindowReader):
     """Read array windows through xarray."""
 
-    def read_window(self, asset: AssetRef) -> NDArray[np.generic]:
+    asset: AssetRef
+    dataset: xr.Dataset
+
+    def read_window(
+        self,
+        request: WindowReadRequest,
+    ) -> WindowReadResult:
         raise NotImplementedError(
             "Xarray window reading has not been implemented."
         )
 
 
-def xarray_backend() -> AssetReaderBackend:
-    """Construct the standard xarray reader backend."""
+@dataclass(frozen=True, slots=True)
+class XarrayBackend(AssetReaderBackend):
+    """Open worker-local xarray reader sessions."""
 
-    return AssetReaderBackend(
-        metadata_reader=XarrayMetadataReader(),
-        window_reader=XarrayWindowReader(),
+    config: XarrayBackendConfig = field(
+        default_factory=XarrayBackendConfig
     )
+
+    @contextmanager
+    def open(self, asset: AssetRef) -> Iterator[AssetReadSession]:
+        with xr.open_dataset(
+            asset.path,
+            engine=self.config.engine,
+            group=self.config.group,
+            decode_cf=self.config.decode_cf,
+            mask_and_scale=self.config.mask_and_scale,
+            cache=self.config.cache,
+        ) as dataset:
+            yield AssetReadSession(
+                metadata_reader=XarrayMetadataReader(asset, dataset),
+                window_reader=XarrayWindowReader(asset, dataset),
+            )
