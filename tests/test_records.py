@@ -46,6 +46,19 @@ class TestWindowReadRequest(unittest.TestCase):
 
         self.assertIsNone(request.source_indices)
 
+    def test_accepts_xarray_variable_and_dimension_indices(self):
+        request = WindowReadRequest(
+            window=self.window,
+            variable_name="temperature",
+            dimension_indices=(("time", 2), ("level", 0)),
+        )
+
+        self.assertEqual(request.variable_name, "temperature")
+        self.assertEqual(
+            request.dimension_indices,
+            (("time", 2), ("level", 0)),
+        )
+
     def test_rejects_empty_source_indices(self):
         with self.assertRaisesRegex(ValueError, "cannot be empty"):
             WindowReadRequest(window=self.window, source_indices=())
@@ -57,6 +70,26 @@ class TestWindowReadRequest(unittest.TestCase):
     def test_rejects_duplicate_source_indices(self):
         with self.assertRaisesRegex(ValueError, "must be unique"):
             WindowReadRequest(window=self.window, source_indices=(1, 1))
+
+    def test_rejects_blank_variable_name(self):
+        with self.assertRaisesRegex(ValueError, "cannot be blank"):
+            WindowReadRequest(window=self.window, variable_name="  ")
+
+    def test_rejects_raster_and_xarray_selectors_together(self):
+        with self.assertRaisesRegex(ValueError, "mutually exclusive"):
+            WindowReadRequest(
+                window=self.window,
+                source_indices=(1,),
+                variable_name="temperature",
+            )
+
+    def test_rejects_duplicate_dimension_names(self):
+        with self.assertRaisesRegex(ValueError, "must be unique"):
+            WindowReadRequest(
+                window=self.window,
+                variable_name="temperature",
+                dimension_indices=(("time", 0), ("time", 1)),
+            )
 
 
 class TestWindowReadResult(unittest.TestCase):

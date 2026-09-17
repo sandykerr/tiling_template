@@ -480,6 +480,16 @@ class TestRasterioReaders(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, r"\[3\]"):
                 session.window_reader.read_window(request)
 
+    def test_rejects_xarray_selectors(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            variable_name="temperature",
+        )
+
+        with RasterioBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "Xarray"):
+                session.window_reader.read_window(request)
+
     def test_backend_applies_config_and_reuses_one_open_handle(self):
         config = RasterioBackendConfig(
             sharing=True,
@@ -532,11 +542,16 @@ class TestXarrayReaders(unittest.TestCase):
     def setUp(self):
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.path = Path(self.temporary_directory.name) / "scene.nc"
+        temperature_values = np.arange(
+            12,
+            dtype=np.float32,
+        ).reshape(2, 2, 3)
+        temperature_values[0, 1, 1] = -9999.0
         dataset = xr.Dataset(
             data_vars={
                 "temperature": (
                     ("time", "y", "x"),
-                    np.arange(12, dtype=np.float32).reshape(2, 2, 3),
+                    temperature_values,
                     {
                         "units": "K",
                         "scale_factor": 0.1,
@@ -664,15 +679,178 @@ class TestXarrayReaders(unittest.TestCase):
 
         with XarrayBackend().open(make_asset(str(path))) as session:
             metadata = session.metadata_reader.read_metadata()
+            request = WindowReadRequest(
+                window=PixelWindow(0, 0, 1, 1),
+                variable_name="value",
+            )
+            with self.assertRaisesRegex(ValueError, "regular spatial grid"):
+                session.window_reader.read_window(request)
 
         self.assertIsNone(metadata.transform)
         self.assertIsNone(metadata.bounds)
         self.assertIsNone(metadata.resolution)
 
-    def test_window_read_explicitly_reports_not_implemented(self):
+    def test_reads_named_variable_with_dimension_selection(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 1, 2, 2),
+            variable_name="temperature",
+            dimension_indices=(("time", 1),),
+        )
+
         with XarrayBackend().open(self.asset) as session:
-            with self.assertRaisesRegex(NotImplementedError, "window reading"):
-                session.window_reader.read_window(make_window_request())
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array([[7, 8], [10, 11]], dtype=np.float32),
+        )
+        np.testing.assert_array_equal(
+            result.valid_mask,
+            np.ones((2, 2), dtype=np.bool_),
+        )
+        self.assertEqual(
+            result.transform,
+            (2.0, 0.0, 12.0, 0.0, -2.0, 20.0, 0.0, 0.0, 1.0),
+        )
+        self.assertIs(result.request, request)
+
+    def test_preserves_unselected_nonspatial_dimensions(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 2),
+            variable_name="temperature",
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array(
+                [
+                    [[0, 1]],
+                    [[6, 7]],
+                ],
+                dtype=np.float32,
+            ),
+        )
+        self.assertEqual(result.data.shape, (2, 1, 2))
+
+    def test_boundless_read_pads_and_marks_nodata_invalid(self):
+        request = WindowReadRequest(
+            window=PixelWindow(-1, -1, 3, 3),
+            variable_name="temperature",
+            dimension_indices=(("time", 0),),
+            boundless=True,
+            fill_value=-1,
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.array(
+                [
+                    [-1, -1, -1],
+                    [-1, 0, 1],
+                    [-1, 3, -9999],
+                ],
+                dtype=np.float32,
+            ),
+        )
+        np.testing.assert_array_equal(
+            result.valid_mask,
+            np.array(
+                [
+                    [False, False, False],
+                    [False, True, True],
+                    [False, True, False],
+                ]
+            ),
+        )
+        self.assertEqual(
+            result.transform,
+            (2.0, 0.0, 8.0, 0.0, -2.0, 22.0, 0.0, 0.0, 1.0),
+        )
+
+    def test_boundless_read_can_be_fully_outside_dataset(self):
+        request = WindowReadRequest(
+            window=PixelWindow(5, 5, 2, 2),
+            variable_name="quality",
+            boundless=True,
+            fill_value=9,
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            result = session.window_reader.read_window(request)
+
+        np.testing.assert_array_equal(
+            result.data,
+            np.full((2, 2), 9, dtype=np.uint8),
+        )
+        np.testing.assert_array_equal(
+            result.valid_mask,
+            np.zeros((2, 2), dtype=np.bool_),
+        )
+        self.assertEqual(
+            result.transform,
+            (2.0, 0.0, 20.0, 0.0, -2.0, 10.0, 0.0, 0.0, 1.0),
+        )
+
+    def test_rejects_out_of_bounds_window_without_boundless_reading(self):
+        request = WindowReadRequest(
+            window=PixelWindow(-1, 0, 2, 2),
+            variable_name="quality",
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "boundless=True"):
+                session.window_reader.read_window(request)
+
+    def test_requires_explicit_variable_name(self):
+        request = WindowReadRequest(window=PixelWindow(0, 0, 1, 1))
+
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "variable_name"):
+                session.window_reader.read_window(request)
+
+    def test_rejects_unknown_variable_and_dimension(self):
+        unknown_variable = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            variable_name="missing",
+        )
+        unknown_dimension = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            variable_name="temperature",
+            dimension_indices=(("level", 0),),
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "not present"):
+                session.window_reader.read_window(unknown_variable)
+            with self.assertRaisesRegex(ValueError, "Dimensions"):
+                session.window_reader.read_window(unknown_dimension)
+
+    def test_rejects_spatial_dimension_selector(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            variable_name="temperature",
+            dimension_indices=(("x", 0),),
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "PixelWindow"):
+                session.window_reader.read_window(request)
+
+    def test_rejects_raster_source_indices(self):
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            source_indices=(1,),
+        )
+
+        with XarrayBackend().open(self.asset) as session:
+            with self.assertRaisesRegex(ValueError, "variable_name"):
+                session.window_reader.read_window(request)
 
     def test_backend_applies_config_and_reuses_one_open_dataset(self):
         config = XarrayBackendConfig(engine="netcdf4")

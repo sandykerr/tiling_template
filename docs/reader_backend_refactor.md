@@ -289,6 +289,9 @@ except the separate-process integration case. Representative real-data,
 multiprocessing, and performance tests from steps 11 and 12 remain to be
 designed against actual project workloads.
 
-Xarray window reading remains intentionally unimplemented. A useful NetCDF
-request must select named variables and non-spatial dimensions; Rasterio's
-one-based `source_indices` contract is not sufficient for that API.
+Xarray window reading uses the same spatial `PixelWindow` contract with an
+explicit `variable_name` and optional integer `dimension_indices`. It
+preserves unselected non-spatial dimensions and supports the same strict or
+boundless spatial behavior, fill values, validity masks, and requested-window
+transform semantics as Rasterio. Xarray window reads require one-dimensional,
+regularly spaced X and Y coordinates.

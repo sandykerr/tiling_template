@@ -12,11 +12,33 @@ from time import perf_counter
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
-from tiling_template.readers.xarray_reader import XarrayBackend
-from tiling_template.records import AssetRef
+from tiling_template.readers.xarray_reader import (
+    XarrayBackend,
+    XarrayMetadataReader,
+)
+from tiling_template.records import (
+    AssetRef,
+    PixelWindow,
+    WindowReadRequest,
+)
 
 
 LOGGER = logging.getLogger("xarray_reader_check")
+
+
+def dimension_index(value: str) -> tuple[str, int]:
+    name, separator, raw_index = value.partition("=")
+    if not separator or not name.strip():
+        raise argparse.ArgumentTypeError(
+            "Dimension indices must use NAME=INDEX syntax."
+        )
+    try:
+        index = int(raw_index)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError(
+            f"Dimension index must be an integer: {value}"
+        ) from error
+    return name.strip(), index
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,9 +61,40 @@ def parse_args() -> argparse.Namespace:
         default=1,
         help="Number of dataset worker processes. Defaults to 1.",
     )
+    parser.add_argument(
+        "--variable",
+        help="Data variable to sample. Omit for a metadata-only check.",
+    )
+    parser.add_argument(
+        "--dimension-index",
+        action="append",
+        default=[],
+        type=dimension_index,
+        metavar="NAME=INDEX",
+        help="Select a non-spatial dimension index; may be repeated.",
+    )
+    parser.add_argument(
+        "--window-size",
+        type=int,
+        default=512,
+        help="Maximum height and width of each sample window.",
+    )
+    parser.add_argument(
+        "--windows-per-dataset",
+        type=int,
+        default=3,
+        help="Number of deterministic diagonal windows to read.",
+    )
     args = parser.parse_args()
     if args.workers <= 0:
         parser.error("--workers must be positive.")
+    if args.window_size <= 0:
+        parser.error("--window-size must be positive.")
+    if args.windows_per_dataset <= 0:
+        parser.error("--windows-per-dataset must be positive.")
+    dimension_names = tuple(name for name, _ in args.dimension_index)
+    if len(set(dimension_names)) != len(dimension_names):
+        parser.error("--dimension-index names must be unique.")
     return args
 
 
@@ -71,7 +124,43 @@ def asset_ref(path: Path) -> AssetRef:
     )
 
 
-def inspect_dataset(path: Path) -> tuple[str, ...]:
+def sample_windows(
+    height: int,
+    width: int,
+    window_size: int,
+    count: int,
+) -> tuple[PixelWindow, ...]:
+    sample_height = min(height, window_size)
+    sample_width = min(width, window_size)
+    maximum_row = height - sample_height
+    maximum_column = width - sample_width
+    fractions = (
+        (0.5,)
+        if count == 1
+        else tuple(index / (count - 1) for index in range(count))
+    )
+    windows = {
+        PixelWindow(
+            row_offset=round(maximum_row * fraction),
+            column_offset=round(maximum_column * fraction),
+            height=sample_height,
+            width=sample_width,
+        )
+        for fraction in fractions
+    }
+    return tuple(
+        sorted(windows, key=lambda item: (item.row_offset, item.column_offset))
+    )
+
+
+def inspect_dataset(
+    path: Path,
+    *,
+    variable_name: str | None,
+    dimension_indices: tuple[tuple[str, int], ...],
+    window_size: int,
+    windows_per_dataset: int,
+) -> tuple[str, ...]:
     asset = asset_ref(path)
     started_at = perf_counter()
     messages: list[str] = []
@@ -95,6 +184,60 @@ def inspect_dataset(path: Path) -> tuple[str, ...]:
                 f"compression={variable.storage.compression}"
             )
 
+        if variable_name is not None:
+            if variable_name not in session.window_reader.dataset.data_vars:
+                raise ValueError(
+                    f"Variable is not present in the dataset: {variable_name}"
+                )
+            variable = session.window_reader.dataset[variable_name]
+            x_coordinate = XarrayMetadataReader._coordinate_for_axis(
+                session.window_reader.dataset,
+                "X",
+            )
+            y_coordinate = XarrayMetadataReader._coordinate_for_axis(
+                session.window_reader.dataset,
+                "Y",
+            )
+            if x_coordinate is None or y_coordinate is None:
+                raise ValueError("Dataset has no one-dimensional spatial grid.")
+
+            x_dimension = x_coordinate.dims[0]
+            y_dimension = y_coordinate.dims[0]
+            if (
+                x_dimension not in variable.dims
+                or y_dimension not in variable.dims
+            ):
+                raise ValueError(
+                    f"Variable {variable_name!r} has no spatial grid."
+                )
+            height = variable.sizes[y_dimension]
+            width = variable.sizes[x_dimension]
+            for window in sample_windows(
+                height,
+                width,
+                window_size,
+                windows_per_dataset,
+            ):
+                request = WindowReadRequest(
+                    window=window,
+                    variable_name=variable_name,
+                    dimension_indices=dimension_indices,
+                )
+                result = session.window_reader.read_window(request)
+                valid_count = (
+                    int(result.valid_mask.sum())
+                    if result.valid_mask is not None
+                    else result.data.size
+                )
+                valid_fraction = valid_count / result.data.size
+                messages.append(
+                    f"Read {asset.path.name}:{variable_name} | "
+                    f"offset=({window.row_offset}, "
+                    f"{window.column_offset}) | shape={result.data.shape} | "
+                    f"dtype={result.data.dtype} | "
+                    f"valid={valid_fraction * 100:.2f}%"
+                )
+
     messages.append(
         f"Completed {asset.path} in {perf_counter() - started_at:.3f} "
         "seconds"
@@ -107,7 +250,14 @@ def log_messages(messages: tuple[str, ...]) -> None:
         LOGGER.info("%s", message)
 
 
-def run_serial(paths: list[Path]) -> int:
+def run_serial(
+    paths: list[Path],
+    *,
+    variable_name: str | None,
+    dimension_indices: tuple[tuple[str, int], ...],
+    window_size: int,
+    windows_per_dataset: int,
+) -> int:
     failures = 0
     for path in tqdm(
         paths,
@@ -116,14 +266,30 @@ def run_serial(paths: list[Path]) -> int:
         file=sys.stdout,
     ):
         try:
-            log_messages(inspect_dataset(path))
+            log_messages(
+                inspect_dataset(
+                    path,
+                    variable_name=variable_name,
+                    dimension_indices=dimension_indices,
+                    window_size=window_size,
+                    windows_per_dataset=windows_per_dataset,
+                )
+            )
         except Exception:
             failures += 1
             LOGGER.exception("Failed dataset: %s", path)
     return failures
 
 
-def run_parallel(paths: list[Path], workers: int) -> int:
+def run_parallel(
+    paths: list[Path],
+    *,
+    workers: int,
+    variable_name: str | None,
+    dimension_indices: tuple[tuple[str, int], ...],
+    window_size: int,
+    windows_per_dataset: int,
+) -> int:
     failures = 0
     spawn_context = get_context("spawn")
 
@@ -132,7 +298,14 @@ def run_parallel(paths: list[Path], workers: int) -> int:
         mp_context=spawn_context,
     ) as executor:
         futures: dict[Future[tuple[str, ...]], Path] = {
-            executor.submit(inspect_dataset, path): path
+            executor.submit(
+                inspect_dataset,
+                path,
+                variable_name=variable_name,
+                dimension_indices=dimension_indices,
+                window_size=window_size,
+                windows_per_dataset=windows_per_dataset,
+            ): path
             for path in paths
         }
         with tqdm(
@@ -164,9 +337,22 @@ def main() -> int:
 
     with logging_redirect_tqdm():
         if args.workers == 1:
-            failures = run_serial(args.datasets)
+            failures = run_serial(
+                args.datasets,
+                variable_name=args.variable,
+                dimension_indices=tuple(args.dimension_index),
+                window_size=args.window_size,
+                windows_per_dataset=args.windows_per_dataset,
+            )
         else:
-            failures = run_parallel(args.datasets, args.workers)
+            failures = run_parallel(
+                args.datasets,
+                workers=args.workers,
+                variable_name=args.variable,
+                dimension_indices=tuple(args.dimension_index),
+                window_size=args.window_size,
+                windows_per_dataset=args.windows_per_dataset,
+            )
 
     if failures:
         LOGGER.error(

@@ -104,24 +104,46 @@ class PixelWindow:
 
 @dataclass(frozen=True, slots=True)
 class WindowReadRequest:
-    """Describe one pixel-window read from an open asset."""
+    """Describe one pixel-window read from an open asset.
+
+    Rasterio requests use one-based ``source_indices``. Xarray requests use
+    one ``variable_name`` and may select integer positions from non-spatial
+    dimensions through ``dimension_indices``.
+    """
 
     window: PixelWindow
-    source_indices: tuple[int, ...] | None = None
+    source_indices: tuple[int, ...] | None = None  # 1-indexed
+    variable_name: str | None = None
+    dimension_indices: tuple[tuple[str, int], ...] = ()  # 1-indexed
     boundless: bool = False
     fill_value: int | float | None = None
 
     def __post_init__(self) -> None:
-        if self.source_indices is None:
-            return
-        if not self.source_indices:
-            raise ValueError("source_indices cannot be empty.")
-        if any(index < 1 for index in self.source_indices):
+        if self.source_indices is not None:
+            if not self.source_indices:
+                raise ValueError("source_indices cannot be empty.")
+            if any(index < 1 for index in self.source_indices):
+                raise ValueError(
+                    "Raster source indices must be one-based positive "
+                    "integers."
+                )
+            if len(set(self.source_indices)) != len(self.source_indices):
+                raise ValueError("source_indices must be unique.")
+
+        if self.variable_name is not None and not self.variable_name.strip():
+            raise ValueError("variable_name cannot be blank.")
+        if self.source_indices is not None and self.variable_name is not None:
             raise ValueError(
-                "Raster source indices must be one-based positive integers."
+                "source_indices and variable_name are mutually exclusive."
             )
-        if len(set(self.source_indices)) != len(self.source_indices):
-            raise ValueError("source_indices must be unique.")
+
+        dimension_names = tuple(
+            name for name, _ in self.dimension_indices
+        )
+        if any(not name.strip() for name in dimension_names):
+            raise ValueError("Dimension names cannot be blank.")
+        if len(set(dimension_names)) != len(dimension_names):
+            raise ValueError("Dimension names must be unique.")
 
 
 @dataclass(frozen=True, slots=True)

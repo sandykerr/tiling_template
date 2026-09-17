@@ -106,6 +106,12 @@ class RasterioWindowReader(WindowReader):
         self,
         request: WindowReadRequest,
     ) -> WindowReadResult:
+        if request.variable_name is not None or request.dimension_indices:
+            raise ValueError(
+                "Rasterio window reads do not accept Xarray variable or "
+                "dimension selectors."
+            )
+
         src = self.dataset
         window = Window(
             col_off=request.window.column_offset,

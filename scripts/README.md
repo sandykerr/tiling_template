@@ -9,6 +9,11 @@ The wrapper creates one Python worker process per Slurm CPU allocated through
 worker opens and closes its own backend sessions; the parent process owns
 logging and the progress bar.
 
+For parallel Rasterio checks, the parent displays a persistent window counter
+for each actively processed dataset plus an overall completed-dataset counter.
+Workers send only small progress events and never write directly to the
+terminal or Slurm logs.
+
 ## Rasterio
 
 The Rasterio check reads normalized metadata and deterministic sample windows.
@@ -25,14 +30,19 @@ sbatch --cpus-per-task=10 scripts/sbatch_reader_backend_check.sh \
 
 ## Xarray
 
-The Xarray check exercises the currently supported metadata-reading path. It
-does not load complete data variables or call the intentionally unimplemented
-Xarray window reader.
+The Xarray check reads metadata by default. Pass `--variable` to exercise
+windowed reading for one data variable. Use repeated `--dimension-index`
+arguments to select positions along dimensions such as time or vertical level;
+unselected non-spatial dimensions are retained in every returned window.
 
 ```bash
 sbatch --cpus-per-task=10 scripts/sbatch_reader_backend_check.sh \
   --backend xarray \
-  --datasets /explore/nobackup/path/a.nc /explore/nobackup/path/b.nc
+  --datasets /explore/nobackup/path/a.nc /explore/nobackup/path/b.nc \
+  --variable temperature \
+  --dimension-index time=0 \
+  --window-size 256 \
+  --windows-per-dataset 5
 ```
 
 Both scripts use Python logging and write their `tqdm` progress bars to

@@ -4,9 +4,17 @@
 import argparse
 import logging
 import sys
-from concurrent.futures import Future, ProcessPoolExecutor, as_completed
+from concurrent.futures import (
+    FIRST_COMPLETED,
+    Future,
+    ProcessPoolExecutor,
+    wait,
+)
+from dataclasses import dataclass
 from multiprocessing import get_context
+from multiprocessing.queues import Queue
 from pathlib import Path
+from queue import Empty
 from time import perf_counter
 
 from tqdm import tqdm
@@ -17,6 +25,30 @@ from tiling_template.records import AssetRef, PixelWindow, WindowReadRequest
 
 
 LOGGER = logging.getLogger("rasterio_reader_check")
+_PROGRESS_QUEUE: Queue | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class WindowProgress:
+    """Report one dataset's window-read progress to the parent process."""
+
+    task_id: int
+    dataset_name: str
+    completed: int
+    total: int
+
+
+def initialize_progress_queue(progress_queue: Queue) -> None:
+    """Bind a parent-owned progress queue inside a worker process."""
+
+    global _PROGRESS_QUEUE
+    _PROGRESS_QUEUE = progress_queue
+
+
+def publish_window_progress(event: WindowProgress) -> None:
+    if _PROGRESS_QUEUE is None:
+        raise RuntimeError("Worker progress queue has not been initialized.")
+    _PROGRESS_QUEUE.put(event)
 
 
 def parse_args() -> argparse.Namespace:
@@ -136,6 +168,7 @@ def inspect_dataset(
     window_size: int,
     windows_per_dataset: int,
     bands: tuple[int, ...],
+    progress_task_id: int | None = None,
 ) -> tuple[str, ...]:
     asset = asset_ref(path)
     started_at = perf_counter()
@@ -161,7 +194,17 @@ def inspect_dataset(
             window_size,
             windows_per_dataset,
         )
-        for window in windows:
+        if progress_task_id is not None:
+            publish_window_progress(
+                WindowProgress(
+                    task_id=progress_task_id,
+                    dataset_name=asset.path.name,
+                    completed=0,
+                    total=len(windows),
+                )
+            )
+
+        for completed, window in enumerate(windows, start=1):
             request = WindowReadRequest(
                 window=window,
                 source_indices=bands,
@@ -179,6 +222,15 @@ def inspect_dataset(
                 f"shape={result.data.shape} | dtype={result.data.dtype} | "
                 f"valid={valid_fraction * 100:.2f}%"
             )
+            if progress_task_id is not None:
+                publish_window_progress(
+                    WindowProgress(
+                        task_id=progress_task_id,
+                        dataset_name=asset.path.name,
+                        completed=completed,
+                        total=len(windows),
+                    )
+                )
 
     messages.append(
         f"Completed {asset.path} in {perf_counter() - started_at:.3f} "
@@ -231,36 +283,110 @@ def run_parallel(
 ) -> int:
     failures = 0
     spawn_context = get_context("spawn")
+    progress_queue = spawn_context.Queue()
+    window_bars: dict[int, tqdm] = {}
+    bar_positions: dict[int, int] = {}
+    available_positions = list(range(1, workers + 1))
+    finished_tasks: set[int] = set()
 
-    with ProcessPoolExecutor(
-        max_workers=workers,
-        mp_context=spawn_context,
-    ) as executor:
-        futures: dict[Future[tuple[str, ...]], Path] = {
-            executor.submit(
-                inspect_dataset,
-                path,
-                window_size=window_size,
-                windows_per_dataset=windows_per_dataset,
-                bands=bands,
-            ): path
-            for path in paths
-        }
-        with tqdm(
-            total=len(futures),
-            desc="Rasterio datasets",
-            unit="dataset",
-            file=sys.stdout,
-        ) as progress:
-            for future in as_completed(futures):
-                path = futures[future]
-                try:
-                    log_messages(future.result())
-                except Exception:
-                    failures += 1
-                    LOGGER.exception("Failed dataset: %s", path)
-                finally:
-                    progress.update()
+    def drain_progress_events() -> None:
+        while True:
+            try:
+                event = progress_queue.get_nowait()
+            except Empty:
+                return
+
+            if event.task_id in finished_tasks:
+                continue
+
+            progress = window_bars.get(event.task_id)
+            if progress is None:
+                if available_positions:
+                    position = available_positions.pop(0)
+                else:
+                    position = max(bar_positions.values(), default=0) + 1
+                bar_positions[event.task_id] = position
+                progress = tqdm(
+                    total=event.total,
+                    desc=f"Windows: {event.dataset_name}",
+                    unit="window",
+                    position=position,
+                    leave=False,
+                    file=sys.stdout,
+                )
+                window_bars[event.task_id] = progress
+
+            increment = event.completed - int(progress.n)
+            if increment > 0:
+                progress.update(increment)
+
+    def close_window_bar(task_id: int, *, completed: bool) -> None:
+        progress = window_bars.pop(task_id, None)
+        position = bar_positions.pop(task_id, None)
+        if progress is not None:
+            if completed and progress.total is not None:
+                progress.update(max(0, progress.total - progress.n))
+            progress.close()
+        if position is not None:
+            available_positions.append(position)
+            available_positions.sort()
+
+    try:
+        with ProcessPoolExecutor(
+            max_workers=workers,
+            mp_context=spawn_context,
+            initializer=initialize_progress_queue,
+            initargs=(progress_queue,),
+        ) as executor:
+            futures: dict[Future[tuple[str, ...]], tuple[int, Path]] = {
+                executor.submit(
+                    inspect_dataset,
+                    path,
+                    window_size=window_size,
+                    windows_per_dataset=windows_per_dataset,
+                    bands=bands,
+                    progress_task_id=task_id,
+                ): (task_id, path)
+                for task_id, path in enumerate(paths)
+            }
+            pending = set(futures)
+            with tqdm(
+                total=len(futures),
+                desc="Rasterio datasets",
+                unit="dataset",
+                position=0,
+                file=sys.stdout,
+            ) as dataset_progress:
+                while pending:
+                    completed_futures, pending = wait(
+                        pending,
+                        timeout=0.1,
+                        return_when=FIRST_COMPLETED,
+                    )
+                    drain_progress_events()
+
+                    for future in completed_futures:
+                        task_id, path = futures[future]
+                        try:
+                            messages = future.result()
+                        except Exception:
+                            failures += 1
+                            finished_tasks.add(task_id)
+                            close_window_bar(task_id, completed=False)
+                            LOGGER.exception("Failed dataset: %s", path)
+                        else:
+                            finished_tasks.add(task_id)
+                            close_window_bar(task_id, completed=True)
+                            log_messages(messages)
+                        finally:
+                            dataset_progress.update()
+
+                drain_progress_events()
+    finally:
+        for task_id in tuple(window_bars):
+            close_window_bar(task_id, completed=False)
+        progress_queue.close()
+        progress_queue.join_thread()
 
     return failures
 
