@@ -1,0 +1,23 @@
+1) Added _normalize_suffix() as a static method in the reader registry.
+
+3) What import should I add for ArrayLike? I don't like importing annotatins from __future___.
+
+------------------------------------------------------------------------------
+
+to-code:
+
+metadata_inspection.py
+      MetadataInspector [!]
+      MetadataValidator [!]
+
+records.py
+      AssetRef
+      SourceRecord
+      AssetMetadata
+      VariableMetadata  [!]
+      ReadWindow        [!]
+      ReadResult        [!]
+
+readers.py
+      AssetReader
+      ReaderRegistry

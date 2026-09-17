@@ -5,10 +5,9 @@ from dataclasses import dataclass
 from typing import Literal, TypeAlias
 
 from .configs import ModalityAssociationConfig
-from .discovery import AssetRef
+from .records import AssociationKey, AssetRef, SourceRecord
 
 
-AssociationKey: TypeAlias = tuple[str, ...]
 SourceIdFactory: TypeAlias = Callable[[AssociationKey], str]
 FilenameMatchSpec = Literal['basename', 'stem']
 DirectoryMatchSpec = Literal['immediate_parent', 'parent_indices']
@@ -139,15 +138,6 @@ class CompositeAssociationStrategy(AssociationStrategy):
             for strategy in self.strategies
             for component in strategy.key_for(asset)
         )
-
-
-@dataclass(frozen=True, slots=True)
-class SourceRecord:
-    """Describe the physical assets associated with one logical source."""
-
-    source_id: str
-    assets: tuple[AssetRef, ...]
-    association_key: AssociationKey
 
 
 def _default_source_id(association_key: AssociationKey) -> str:

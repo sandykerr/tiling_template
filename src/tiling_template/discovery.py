@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
+from .records import AssetRef
 from .types import AssetRole
 
 
@@ -97,30 +98,6 @@ class AssetSpec:
         self.exclude_matchers = tuple(
             matcher_class(pattern) for pattern in self.exclude_patterns
         )
-
-
-@dataclass(frozen=True, slots=True)
-class AssetRef:
-    """Describe one local asset discovered from an AssetSpec."""
-
-    path: Path
-    relative_path: Path
-    spec_id: str
-    role: AssetRole
-    modality: str
-    size_bytes: int
-    modified_time_ns: int
-
-    def to_dict(self):
-        return {
-            "path": str(self.path),
-            "relative_path": self.relative_path.as_posix(),
-            "spec_id": self.spec_id,
-            "role": self.role,
-            "modality": self.modality,
-            "size_bytes": self.size_bytes,
-            "modified_time_ns": self.modified_time_ns,
-        }
 
 
 class AssetDiscoverer:

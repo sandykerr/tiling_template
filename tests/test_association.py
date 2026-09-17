@@ -10,7 +10,7 @@ from tiling_template.association import (
     FilenameAssociationStrategy,
 )
 from tiling_template.configs import ModalityAssociationConfig
-from tiling_template.discovery import AssetRef
+from tiling_template.records import AssetRef, SourceRecord
 
 
 def make_asset(
@@ -201,6 +201,7 @@ class TestAssetAssociator(unittest.TestCase):
 
         records = associator.associate_assets()
 
+        self.assertTrue(all(isinstance(record, SourceRecord) for record in records))
         self.assertEqual(
             [record.association_key for record in records],
             [('scene_a',), ('scene_b',)],

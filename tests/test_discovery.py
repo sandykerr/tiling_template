@@ -8,6 +8,7 @@ from tiling_template.discovery import (
     GlobMatcher,
     RegexMatcher,
 )
+from tiling_template.records import AssetRef
 
 
 class TestMatchers(unittest.TestCase):
@@ -146,6 +147,7 @@ class TestAssetDiscoverer(unittest.TestCase):
             ['a.csv', 'b.csv', 'nested/c.csv', 'nested/deeper/d.csv'],
         )
         first = results[0]
+        self.assertIsInstance(first, AssetRef)
         self.assertTrue(first.path.is_absolute())
         self.assertEqual(first.spec_id, 'csv_input')
         self.assertEqual(first.role, 'input')
