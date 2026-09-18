@@ -20,8 +20,13 @@ from time import perf_counter
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
-from tiling_template.readers.rasterio_reader import RasterioBackend
-from tiling_template.records import AssetRef, PixelWindow, WindowReadRequest
+from tiling_template.readers.rasterio import RasterioBackend
+from tiling_template.records import (
+    AssetRef,
+    PixelWindow,
+    RasterBandSelection,
+    WindowReadRequest,
+)
 
 
 LOGGER = logging.getLogger("rasterio_reader_check")
@@ -207,7 +212,7 @@ def inspect_dataset(
         for completed, window in enumerate(windows, start=1):
             request = WindowReadRequest(
                 window=window,
-                source_indices=bands,
+                selection=RasterBandSelection(source_indices=bands),
             )
             result = session.window_reader.read_window(request)
             valid_count = (
@@ -219,6 +224,7 @@ def inspect_dataset(
             messages.append(
                 f"Read {asset.path.name} | "
                 f"offset=({window.row_offset}, {window.column_offset}) | "
+                f"dimensions={result.dimensions} | "
                 f"shape={result.data.shape} | dtype={result.data.dtype} | "
                 f"valid={valid_fraction * 100:.2f}%"
             )

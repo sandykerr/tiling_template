@@ -1,5 +1,36 @@
 # Tiling Pipeline Order
 
+## Document usage
+
+This document outlines the mostly sequential stages of the planned tiling
+pipeline. During initial development, each stage should be implemented as an
+independently callable, composable component rather than immediately extending
+a central orchestrator.
+
+Components should have explicit, serializable inputs and outputs; deterministic
+behavior where applicable; and no dependency on a particular executor,
+progress display, or CLI. Planning, filtering, validation, and sampling logic
+should be pure where practical. Components that perform I/O should own their
+resources within a clear context and return structured records rather than
+mutating shared pipeline state.
+
+High-level orchestration will be designed after the backend components are
+stable. It will compose the same component APIs for sequential execution,
+multiprocessing, retries, progress reporting, journaling, and a runnable
+Python or shell CLI. Stage contracts, stable IDs, ordering, and failure-result
+semantics should still be considered during component design so orchestration
+does not require broad API changes later.
+
+### Implementation Status Key
+
+| Status | Meaning |
+| --- | --- |
+| **[Planned]** | Scope is identified, but implementation has not started. |
+| **[In Progress]** | The component or its contract is actively being implemented. |
+| **[Component Complete]** | Standalone behavior and contracts are implemented and tested; orchestration is still pending. |
+| **[Deferred]** | Intentionally postponed until a concrete requirement or dependency justifies it. |
+| **[Complete]** | Integrated into the runnable pipeline and validated through orchestration. |
+
 ## Coordinate and Window Conventions
 
 - Pixel-center versus pixel-edge conventions:
@@ -40,30 +71,30 @@
 
 ## Orchestration
 
-1) Asset discovery: find assets on disk, in cloud storage, or through another catalog.
+1) Asset discovery: find assets on disk, in cloud storage, or through another catalog. **[Component Complete]**
     - Determine filename and path parsing needs, such as product ID, date, region, product, or modality.
     - Identify candidate inputs, labels, metadata, and sidecar files.
     - Support multiple modalities.
     - Account for logical assets split across multiple physical files, such as an ENVI header and binary data pair.
     - Discovery answers which assets exist; it does not need to prove that a complete logical source exists.
-2) Asset association: group discovered assets into logical SourceRecords.
+2) Asset association: group discovered assets into logical SourceRecords. **[Component Complete]**
     - Assign each asset a role, such as input, label, QA, metadata, or sidecar.
     - Verify that required matches exist.
     - Detect missing, duplicate, and ambiguous associations.
     - Create a stable source ID that is not based only on a potentially duplicated basename.
-3) Source metadata inspection and structural validation.
+3) Source metadata inspection and structural validation. **[Component Complete]**
     - Open and parse file headers without reading all pixel data.
     - Validate CRS/projection, transform, resolution, dimensions, extent, data type, nodata declaration, and available indices.
     - Confirm that expected channels, bands, date/time slices, or other dimensions exist.
     - Determine whether modalities can be aligned to the intended grid.
     - Perform source-level inspection in independent workers when useful, with each worker opening its own file handles.
     - Distinguish header/structural validation from complete content validation; a valid header does not prove that every data block can be decoded.
-4) Optional source characterization.
+4) Optional source characterization. **[Deferred]**
     - Read representative blocks or existing sidecar summaries when selection depends on input or label values.
     - Detect sampled decode failures, implausible values, non-finite values, and approximate nodata or class distributions.
     - Perform a complete source scan only when explicitly requested or required.
     - Store reusable summaries in the SourceRecord or a separate characterization artifact.
-5) Source selection and sampling.
+5) Source selection and sampling. **[In Progress]**
     - Possible variables:
         - Geography
         - Date/time
@@ -81,7 +112,7 @@
     - Make results deterministic using a configured seed or stable hash, independent of worker completion order.
     - Respect configured exclusions and spatial/temporal separation requirements.
     - Source selection based on data values requires metadata summaries or the optional characterization phase.
-6) Define or load the GridDefinition.
+6) Define or load the GridDefinition. **[Planned]**
     - Select the grid approach: image-relative, canonical, standardized, AOI-driven, or adaptive.
     - Define cell width and height.
     - Define grid origin using an explicit pixel-edge or pixel-center convention.
@@ -97,27 +128,27 @@
     - Define expected output shape.
     - Define co-registration requirements between modalities.
     - Keep the GridDefinition independent from train/validation/test membership.
-7) Create candidate TilePlans.
+7) Create candidate TilePlans. **[Planned]**
     - Intersect selected sources with grid cells.
     - Calculate source read windows, core/output windows, spatial bounds, and output transforms.
     - Determine expected padding, coverage, reprojection, and alignment behavior.
     - Associate each TilePlan with its SourceRecord and leakage group.
     - Derive a stable tile ID from a stable source ID, grid/configuration ID, and tile row/column or equivalent spatial identity.
     - Do not include the dataset split in the stable tile ID.
-8) Split assignment for ML datasets.
+8) Split assignment for ML datasets. **[Planned]**
     - Permit an explicit no-split state for non-ML applications, preliminary runs, or downstream assignment.
     - Prefer assignment by the highest-level leakage group, such as source, scene, region, patient, site, or time period.
     - Keep related and overlapping tiles in the same split unless leakage is intentionally allowed.
     - Permit split assignment before candidate grid creation when it is entirely source/group based.
     - Require candidate TilePlans first when split assignment deliberately depends on tile-level properties.
     - Store split assignments independently from the reusable GridDefinition and stable tile identity.
-9) Tile selection and sampling.
+9) Tile selection and sampling. **[Planned]**
     - Filter or sample candidate TilePlans within the previously assigned leakage and split constraints.
     - Support geographic, temporal, label-aware, value-aware, systematic, random, stratified, clustered, or custom approaches.
     - Collect inexpensive tile summaries first when content-aware selection requires them.
     - Validate requested counts, percentages, strata, exclusions, and minimum separation rules.
     - Ensure deterministic results for the configured seed.
-10) Optional fitted-preprocessing statistics phase.
+10) Optional fitted-preprocessing statistics phase. **[Planned]**
     - Treat fitted preprocessing as distinct from model-training diagnostics.
     - Support publishing raw tiles without fitted preprocessing as the default generic behavior.
     - If dataset-level normalization is requested, calculate statistics from selected training data only.
@@ -125,7 +156,7 @@
     - Distinguish per-tile, per-source, dataset-level, and fixed/user-provided normalization explicitly.
     - Freeze and version fitted values before workers apply them to all splits.
     - Optionally publish statistics as artifacts without modifying tile values.
-11) Freeze the run plan and initialize worker staging.
+11) Freeze the run plan and initialize worker staging. **[Planned]**
     - Freeze the resolved source catalog, configuration, grid, TilePlans, split assignments, selections, and fitted parameters.
     - Create a unique run ID.
     - Create an isolated staging area and any required final output directories.
@@ -136,24 +167,24 @@
 
 ## Worker Execution
 
-12) Create source-oriented TileBatches.
+12) Create source-oriented TileBatches. **[Planned]**
     - Prefer batches that process multiple tiles from one source so each source is not repeatedly opened for every tile.
     - Keep batches small enough for reasonable load balancing and memory use.
     - Pass serializable source references, TilePlans, and frozen configuration to workers.
     - Do not pass open Rasterio/GDAL datasets or other non-process-safe handles between processes.
     - Use the same worker contract for sequential and multiprocessing executors.
-13) Start worker timing and optional resource tracking.
+13) Start worker timing and optional resource tracking. **[Planned]**
     - Record batch and tile timing where useful.
     - Ensure optional instrumentation does not change processing results.
-14) Open worker-owned source resources and perform content checks.
+14) Open worker-owned source resources and perform content checks. **[Planned]**
     - Open each required source asset inside the worker.
     - Confirm that current metadata still agrees with the frozen SourceRecord when required.
     - Treat source-opening or source-level failures as BatchResult information when individual TileResults cannot be created.
-15) Read data and source masks for each tile.
+15) Read data and source masks for each tile. **[Planned]**
     - Read only required windows and requested indices, such as bands, channels, or date/time slices.
     - Read available nodata, QA, cloud, coverage, and label-validity information.
     - Use chunked/windowed access appropriate for source layout and storage backend.
-16) Perform mask-aware tile processing.
+16) Perform mask-aware tile processing. **[Planned]**
     - Create source-space validity masks before operations that need them.
     - Warp, reproject, merge, or clip data as required.
     - Use role-appropriate resampling:
@@ -165,7 +196,7 @@
     - Apply frozen fitted preprocessing when configured.
     - Apply other explicit per-tile processing, such as fixed clipping or intentionally per-tile scaling.
     - Keep stochastic model-training augmentation downstream by default.
-17) Validate and classify each processed tile.
+17) Validate and classify each processed tile. **[Planned]**
     - Verify expected shape, data type, CRS, transform, resolution, extent, and modality alignment.
     - Verify sufficient valid coverage and application-specific label/input acceptance rules.
     - Assign a structured state:
@@ -173,17 +204,17 @@
         - Rejected: processing succeeded, but the tile did not meet an acceptance rule, such as minimum valid coverage.
         - Failed: processing could not be completed because of an error.
         - Skipped: the tile was intentionally omitted, already completed, or filtered by an earlier rule.
-18) Stage and validate accepted tile outputs.
+18) Stage and validate accepted tile outputs. **[Planned]**
     - Write each accepted tile to a unique temporary/staging path.
     - Configure output format, compression, data type, bit depth, metadata, and naming.
     - Close and reopen staged files to verify readability and expected metadata.
     - Do not treat staged output as finally published.
     - For local files, final commit can use atomic rename when staging and final destinations share a filesystem.
     - For cloud/object storage, let the publication backend define commit semantics because rename may be copy-and-delete rather than atomic.
-19) Finish worker timing/resource tracking and close resources.
+19) Finish worker timing/resource tracking and close resources. **[Planned]**
     - Close all worker-owned datasets, handles, and other resources.
     - Flush worker-local output and result fragments when used.
-20) Return structured results.
+20) Return structured results. **[Planned]**
     - Return one TileResult per tile containing:
         - Tile ID
         - Source ID
@@ -202,27 +233,27 @@
 
 ## Finalization
 
-21) Reconcile planned and returned results.
+21) Reconcile planned and returned results. **[Planned]**
     - Confirm that every planned tile has an accepted, rejected, failed, or skipped result.
     - Detect duplicate or missing results.
     - Collect worker exceptions, process crashes, timeouts, and incomplete batches into structured failure records.
-22) Evaluate the configured run-level failure policy.
+22) Evaluate the configured run-level failure policy. **[Planned]**
     - Decide which conditions are errors versus warnings.
     - Support thresholds such as maximum failure percentage, maximum rejection percentage, and minimum accepted counts per split or stratum.
     - Detect systemic failures, such as every tile failing from expired credentials or a missing modality.
     - Permit tolerated individual failures without automatically invalidating the complete dataset.
-23) Commit accepted staged outputs.
+23) Commit accepted staged outputs. **[Planned]**
     - Commit each verified staged output using the selected publication backend.
     - Record the committed state and final path in the coordinator-owned manifest or journal.
     - Make publication idempotent where practical so interrupted runs can be resumed safely.
-24) Validate the final dataset.
+24) Validate the final dataset. **[Planned]**
     - Confirm final file readability.
     - Confirm output metadata, dimensions, transforms, CRS, data types, and checksums when configured.
     - Ensure manifest and file counts reconcile.
     - Ensure split groups do not cross prohibited boundaries.
     - Ensure required classes, strata, modalities, and splits satisfy configured minimums.
     - Confirm that no required output remains only in staging.
-25) Finalize artifacts.
+25) Finalize artifacts. **[Planned]**
     - Write the canonical manifest and any requested plots, metrics, and reports.
     - Include or reference:
         - Code and dependency version information
@@ -235,13 +266,13 @@
         - Accepted, rejected, failed, and skipped records
         - Summary quality and performance metrics
     - Preserve enough information to reproduce or diagnose failed runs.
-26) Perform narrowly scoped cleanup.
+26) Perform narrowly scoped cleanup. **[Planned]**
     - Remove temporary files owned by the current run when policy permits.
     - Remove incomplete atomic-write artifacts.
     - Preserve failure reports, logs, frozen configuration, and other artifacts needed for diagnosis or resume.
     - Never delete previously successful outputs unless explicitly requested.
     - Restrict deletion to known run paths or paths containing an expected ownership marker.
-27) Write the final run marker.
+27) Write the final run marker. **[Planned]**
     - Write _SUCCESS last only when final validation satisfies the configured run-level policy.
     - _SUCCESS can permit documented, tolerated tile failures when the configured policy allows them.
     - On failure, write a structured failure report before optionally writing a _FAIL marker.

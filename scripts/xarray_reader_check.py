@@ -13,7 +13,7 @@ from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
 from tiling_template.configs.reader import XarrayBackendConfig
-from tiling_template.readers.xarray_reader import (
+from tiling_template.readers.xarray import (
     XarrayBackend,
     XarrayMetadataReader,
 )
@@ -21,6 +21,7 @@ from tiling_template.records import (
     AssetRef,
     PixelWindow,
     WindowReadRequest,
+    XarrayVariableSelection,
 )
 
 
@@ -266,8 +267,10 @@ def inspect_dataset(
                 ):
                     request = WindowReadRequest(
                         window=window,
-                        variable_name=variable_name,
-                        dimension_indices=dimension_indices,
+                        selection=XarrayVariableSelection(
+                            variable_name=variable_name,
+                            dimension_indices=dimension_indices,
+                        ),
                     )
                     result = session.window_reader.read_window(request)
                     valid_count = (
@@ -280,6 +283,7 @@ def inspect_dataset(
                         f"Read {asset.path.name}:{variable_name} | "
                         f"offset=({window.row_offset}, "
                         f"{window.column_offset}) | "
+                        f"dimensions={result.dimensions} | "
                         f"shape={result.data.shape} | "
                         f"dtype={result.data.dtype} | "
                         f"valid={valid_fraction * 100:.2f}%"

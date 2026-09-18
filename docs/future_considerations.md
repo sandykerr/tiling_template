@@ -61,3 +61,17 @@ GDAL cache. The batching policy belongs in orchestration rather than the
 reader backend; reader backends should remain responsible only for opening,
 reading, and closing worker-local asset resources.
 
+## Xarray Grid Considerations
+
+The current Xarray reader resolves a regular, one-dimensional X/Y grid for
+each metadata or window operation. If profiling shows that repeated coordinate
+inspection is material, resolve the grid once per open reader session and
+share the immutable result between its metadata and window readers. Cached
+grid state should remain worker-local and must not outlive its dataset.
+
+Future datasets may use irregular one-dimensional coordinates, curvilinear
+two-dimensional coordinates, or other grid conventions that cannot be
+represented by the current affine transform. Add support only for concrete
+project needs, with a dedicated grid resolver and tests defining window,
+transform, and alignment behavior. Do not coerce a non-affine grid into the
+existing regular-grid representation.
