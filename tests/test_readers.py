@@ -25,12 +25,12 @@ from tiling_template.readers import (
     WindowReader,
     default_reader_registry,
 )
-from tiling_template.readers.rasterio_reader import (
+from tiling_template.readers.rasterio import (
     RasterioBackend,
     RasterioMetadataReader,
     RasterioWindowReader,
 )
-from tiling_template.readers.xarray_reader import (
+from tiling_template.readers.xarray import (
     XarrayBackend,
     XarrayMetadataReader,
     XarrayWindowReader,
@@ -39,9 +39,11 @@ from tiling_template.records import (
     AssetMetadata,
     AssetRef,
     PixelWindow,
+    RasterBandSelection,
     VariableMetadata,
     WindowReadRequest,
     WindowReadResult,
+    XarrayVariableSelection,
 )
 
 
@@ -66,7 +68,7 @@ def make_window_request() -> WindowReadRequest:
             height=1,
             width=1,
         ),
-        source_indices=(1,),
+        selection=RasterBandSelection(source_indices=(1,)),
     )
 
 
@@ -98,6 +100,7 @@ class FakeWindowReader(WindowReader):
         return WindowReadResult(
             data=data,
             valid_mask=np.ones_like(data, dtype=np.bool_),
+            dimensions=("band", "y", "x"),
             transform=(1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0),
             request=request,
         )
@@ -385,10 +388,28 @@ class TestRasterioReaders(unittest.TestCase):
         self.assertEqual(second.name, "band_2")
         self.assertEqual(second.source_index, 2)
 
+    def test_reports_strip_organized_raster_as_not_tiled(self):
+        path = Path(self.temporary_directory.name) / "striped.tif"
+        with rasterio.open(
+            path,
+            "w",
+            driver="GTiff",
+            width=3,
+            height=2,
+            count=1,
+            dtype="uint8",
+        ) as dataset:
+            dataset.write(np.ones((1, 2, 3), dtype=np.uint8))
+
+        with RasterioBackend().open(make_asset(str(path))) as session:
+            metadata = session.metadata_reader.read_metadata()
+
+        self.assertFalse(metadata.is_tiled)
+
     def test_reads_selected_bands_in_requested_order(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 1, 2, 2),
-            source_indices=(2, 1),
+            selection=RasterBandSelection(source_indices=(2, 1)),
         )
 
         with RasterioBackend().open(self.asset) as session:
@@ -417,10 +438,14 @@ class TestRasterioReaders(unittest.TestCase):
             result.transform,
             tuple(from_origin(12, 20, 2, 2)),
         )
+        self.assertEqual(result.dimensions, ("band", "y", "x"))
         self.assertIs(result.request, request)
 
     def test_defaults_to_all_bands(self):
-        request = WindowReadRequest(window=PixelWindow(0, 0, 1, 1))
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 1, 1),
+            selection=RasterBandSelection(),
+        )
 
         with RasterioBackend().open(self.asset) as session:
             result = session.window_reader.read_window(request)
@@ -434,7 +459,7 @@ class TestRasterioReaders(unittest.TestCase):
     def test_boundless_read_pads_data_and_marks_padding_invalid(self):
         request = WindowReadRequest(
             window=PixelWindow(-1, -1, 3, 3),
-            source_indices=(1,),
+            selection=RasterBandSelection(source_indices=(1,)),
             boundless=True,
             fill_value=77,
         )
@@ -475,6 +500,7 @@ class TestRasterioReaders(unittest.TestCase):
     def test_rejects_out_of_bounds_window_without_boundless_reading(self):
         request = WindowReadRequest(
             window=PixelWindow(-1, 0, 2, 2),
+            selection=RasterBandSelection(),
         )
 
         with RasterioBackend().open(self.asset) as session:
@@ -484,7 +510,7 @@ class TestRasterioReaders(unittest.TestCase):
     def test_rejects_source_index_missing_from_dataset(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            source_indices=(3,),
+            selection=RasterBandSelection(source_indices=(3,)),
         )
 
         with RasterioBackend().open(self.asset) as session:
@@ -494,7 +520,7 @@ class TestRasterioReaders(unittest.TestCase):
     def test_rejects_xarray_selectors(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            variable_name="temperature",
+            selection=XarrayVariableSelection("temperature"),
         )
 
         with RasterioBackend().open(self.asset) as session:
@@ -509,7 +535,7 @@ class TestRasterioReaders(unittest.TestCase):
         backend = RasterioBackend(config)
 
         with patch(
-            "tiling_template.readers.rasterio_reader.rasterio.open",
+            "tiling_template.readers.rasterio.reader.rasterio.open",
             wraps=rasterio.open,
         ) as open_mock:
             with backend.open(self.asset) as session:
@@ -692,7 +718,7 @@ class TestXarrayReaders(unittest.TestCase):
             metadata = session.metadata_reader.read_metadata()
             request = WindowReadRequest(
                 window=PixelWindow(0, 0, 1, 1),
-                variable_name="value",
+                selection=XarrayVariableSelection("value"),
             )
             with self.assertRaisesRegex(ValueError, "regular spatial grid"):
                 session.window_reader.read_window(request)
@@ -704,8 +730,10 @@ class TestXarrayReaders(unittest.TestCase):
     def test_reads_named_variable_with_dimension_selection(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 1, 2, 2),
-            variable_name="temperature",
-            dimension_indices=(("time", 1),),
+            selection=XarrayVariableSelection(
+                variable_name="temperature",
+                dimension_indices=(("time", 1),),
+            ),
         )
 
         with XarrayBackend().open(self.asset) as session:
@@ -723,12 +751,13 @@ class TestXarrayReaders(unittest.TestCase):
             result.transform,
             (2.0, 0.0, 12.0, 0.0, -2.0, 20.0, 0.0, 0.0, 1.0),
         )
+        self.assertEqual(result.dimensions, ("y", "x"))
         self.assertIs(result.request, request)
 
     def test_preserves_unselected_nonspatial_dimensions(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 2),
-            variable_name="temperature",
+            selection=XarrayVariableSelection("temperature"),
         )
 
         with XarrayBackend().open(self.asset) as session:
@@ -745,12 +774,15 @@ class TestXarrayReaders(unittest.TestCase):
             ),
         )
         self.assertEqual(result.data.shape, (2, 1, 2))
+        self.assertEqual(result.dimensions, ("time", "y", "x"))
 
     def test_boundless_read_pads_and_marks_nodata_invalid(self):
         request = WindowReadRequest(
             window=PixelWindow(-1, -1, 3, 3),
-            variable_name="temperature",
-            dimension_indices=(("time", 0),),
+            selection=XarrayVariableSelection(
+                variable_name="temperature",
+                dimension_indices=(("time", 0),),
+            ),
             boundless=True,
             fill_value=-1,
         )
@@ -787,7 +819,7 @@ class TestXarrayReaders(unittest.TestCase):
     def test_boundless_read_can_be_fully_outside_dataset(self):
         request = WindowReadRequest(
             window=PixelWindow(5, 5, 2, 2),
-            variable_name="quality",
+            selection=XarrayVariableSelection("quality"),
             boundless=True,
             fill_value=9,
         )
@@ -811,29 +843,24 @@ class TestXarrayReaders(unittest.TestCase):
     def test_rejects_out_of_bounds_window_without_boundless_reading(self):
         request = WindowReadRequest(
             window=PixelWindow(-1, 0, 2, 2),
-            variable_name="quality",
+            selection=XarrayVariableSelection("quality"),
         )
 
         with XarrayBackend().open(self.asset) as session:
             with self.assertRaisesRegex(ValueError, "boundless=True"):
                 session.window_reader.read_window(request)
 
-    def test_requires_explicit_variable_name(self):
-        request = WindowReadRequest(window=PixelWindow(0, 0, 1, 1))
-
-        with XarrayBackend().open(self.asset) as session:
-            with self.assertRaisesRegex(ValueError, "variable_name"):
-                session.window_reader.read_window(request)
-
     def test_rejects_unknown_variable_and_dimension(self):
         unknown_variable = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            variable_name="missing",
+            selection=XarrayVariableSelection("missing"),
         )
         unknown_dimension = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            variable_name="temperature",
-            dimension_indices=(("level", 0),),
+            selection=XarrayVariableSelection(
+                variable_name="temperature",
+                dimension_indices=(("level", 0),),
+            ),
         )
 
         with XarrayBackend().open(self.asset) as session:
@@ -845,22 +872,24 @@ class TestXarrayReaders(unittest.TestCase):
     def test_rejects_spatial_dimension_selector(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            variable_name="temperature",
-            dimension_indices=(("x", 0),),
+            selection=XarrayVariableSelection(
+                variable_name="temperature",
+                dimension_indices=(("x", 0),),
+            ),
         )
 
         with XarrayBackend().open(self.asset) as session:
             with self.assertRaisesRegex(ValueError, "PixelWindow"):
                 session.window_reader.read_window(request)
 
-    def test_rejects_raster_source_indices(self):
+    def test_rejects_raster_selection(self):
         request = WindowReadRequest(
             window=PixelWindow(0, 0, 1, 1),
-            source_indices=(1,),
+            selection=RasterBandSelection(source_indices=(1,)),
         )
 
         with XarrayBackend().open(self.asset) as session:
-            with self.assertRaisesRegex(ValueError, "variable_name"):
+            with self.assertRaisesRegex(ValueError, "XarrayVariableSelection"):
                 session.window_reader.read_window(request)
 
     def test_backend_applies_config_and_reuses_one_open_dataset(self):
@@ -868,7 +897,7 @@ class TestXarrayReaders(unittest.TestCase):
         backend = XarrayBackend(config)
 
         with patch(
-            "tiling_template.readers.xarray_reader.xr.open_dataset",
+            "tiling_template.readers.xarray.reader.xr.open_dataset",
             wraps=xr.open_dataset,
         ) as open_mock:
             with backend.open(self.asset) as session:
@@ -894,7 +923,7 @@ class TestXarrayReaders(unittest.TestCase):
         )
 
         with patch(
-            "tiling_template.readers.xarray_reader.import_module"
+            "tiling_template.readers.xarray.reader.import_module"
         ) as import_mock:
             with backend.open(self.asset) as session:
                 metadata = session.metadata_reader.read_metadata()
@@ -911,7 +940,7 @@ class TestXarrayReaders(unittest.TestCase):
         )
 
         with patch(
-            "tiling_template.readers.xarray_reader.import_module",
+            "tiling_template.readers.xarray.reader.import_module",
             side_effect=ModuleNotFoundError("missing dependency"),
         ):
             with self.assertRaisesRegex(

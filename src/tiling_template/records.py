@@ -103,20 +103,10 @@ class PixelWindow:
 
 
 @dataclass(frozen=True, slots=True)
-class WindowReadRequest:
-    """Describe one pixel-window read from an open asset.
+class RasterBandSelection:
+    """Select optional one-based Rasterio band indices."""
 
-    Rasterio requests use one-based ``source_indices``. Xarray requests use
-    one ``variable_name`` and may select integer positions from non-spatial
-    dimensions through ``dimension_indices``.
-    """
-
-    window: PixelWindow
     source_indices: tuple[int, ...] | None = None  # 1-indexed
-    variable_name: str | None = None
-    dimension_indices: tuple[tuple[str, int], ...] = ()  # 1-indexed
-    boundless: bool = False
-    fill_value: int | float | None = None
 
     def __post_init__(self) -> None:
         if self.source_indices is not None:
@@ -130,12 +120,17 @@ class WindowReadRequest:
             if len(set(self.source_indices)) != len(self.source_indices):
                 raise ValueError("source_indices must be unique.")
 
-        if self.variable_name is not None and not self.variable_name.strip():
+
+@dataclass(frozen=True, slots=True)
+class XarrayVariableSelection:
+    """Select an Xarray variable and optional non-spatial indices."""
+
+    variable_name: str
+    dimension_indices: tuple[tuple[str, int], ...] = ()  # zero-based
+
+    def __post_init__(self) -> None:
+        if not self.variable_name.strip():
             raise ValueError("variable_name cannot be blank.")
-        if self.source_indices is not None and self.variable_name is not None:
-            raise ValueError(
-                "source_indices and variable_name are mutually exclusive."
-            )
 
         dimension_names = tuple(
             name for name, _ in self.dimension_indices
@@ -146,16 +141,34 @@ class WindowReadRequest:
             raise ValueError("Dimension names must be unique.")
 
 
+WindowSelection: TypeAlias = RasterBandSelection | XarrayVariableSelection
+
+
+@dataclass(frozen=True, slots=True)
+class WindowReadRequest:
+    """Describe a pixel-window read with a backend-specific selection."""
+
+    window: PixelWindow
+    selection: WindowSelection
+    boundless: bool = False
+    fill_value: int | float | None = None
+
+
 @dataclass(frozen=True, slots=True)
 class WindowReadResult:
-    """Contain one window read and an optional per-element validity mask."""
+    """Contain one dimension-labeled window read and its validity mask."""
 
     data: NDArray[np.generic]
     valid_mask: NDArray[np.bool_] | None
+    dimensions: tuple[str, ...]
     transform: tuple[float, ...]
     request: WindowReadRequest
 
     def __post_init__(self) -> None:
+        if len(self.dimensions) != self.data.ndim:
+            raise ValueError(
+                "dimensions must contain one name per data axis."
+            )
         if (
             self.valid_mask is not None
             and self.valid_mask.shape != self.data.shape

@@ -7,21 +7,51 @@ import rasterio
 from rasterio.io import DatasetReader
 from rasterio.windows import Window
 
-from ..configs.reader import RasterioBackendConfig
-from .base import (
+from ...configs.reader import RasterioBackendConfig
+from ..base import (
     AssetReadSession,
     AssetReaderBackend,
     MetadataReader,
     WindowReader,
 )
-from ..records import (
+from ...records import (
     AssetMetadata,
     AssetRef,
+    RasterBandSelection,
     VariableMetadata,
     VariableStorageMetadata,
     WindowReadRequest,
     WindowReadResult,
 )
+from ..windowing import resolve_window_geometry
+
+
+def rasterio_variable_metadata(
+    dataset: DatasetReader,
+    index: int,
+    compression: str | None,
+) -> VariableMetadata:
+    """Normalize one Rasterio band into a backend-neutral record."""
+
+    position = dataset.indexes.index(index)
+    band_name = dataset.descriptions[position]
+    return VariableMetadata(
+        name=band_name or f"band_{index}",
+        shape=(dataset.height, dataset.width),
+        dimensions=("y", "x"),
+        dtype=str(dataset.dtypes[position]),
+        source_index=index,
+        nodata=dataset.nodatavals[position],
+        scale=dataset.scales[position],
+        offset=dataset.offsets[position],
+        unit=dataset.units[position],
+        attributes=dataset.tags(index),
+        storage=VariableStorageMetadata(
+            chunk_shape=tuple(dataset.block_shapes[position]),
+            compression=compression,
+            overview_factors=tuple(dataset.overviews(index)),
+        ),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,43 +69,8 @@ class RasterioMetadataReader(MetadataReader):
             else None
         )
         variables = tuple(
-            VariableMetadata(
-                name=band_name or f"band_{i}",
-                shape=(src.height, src.width),
-                dimensions=("y", "x"),
-                dtype=str(dtype),
-                source_index=i,
-                nodata=nodata,
-                scale=scale,
-                offset=offset,
-                unit=unit,
-                attributes=src.tags(i),
-                storage=VariableStorageMetadata(
-                    chunk_shape=tuple(block_shape),
-                    compression=compression,
-                    overview_factors=tuple(src.overviews(i)),
-                ),
-            )
-            for (
-                i,
-                band_name,
-                dtype,
-                nodata,
-                scale,
-                offset,
-                unit,
-                block_shape,
-            ) in zip(
-                src.indexes,
-                src.descriptions,
-                src.dtypes,
-                src.nodatavals,
-                src.scales,
-                src.offsets,
-                src.units,
-                src.block_shapes,
-                strict=True,
-            )
+            rasterio_variable_metadata(src, index, compression)
+            for index in src.indexes
         )
         return AssetMetadata(
             asset=self.asset,
@@ -84,13 +79,7 @@ class RasterioMetadataReader(MetadataReader):
             transform=tuple(src.transform),
             bounds=tuple(src.bounds),
             resolution=tuple(src.res),
-            is_tiled=(
-                bool(src.block_shapes)
-                and all(
-                    src.width != block_width
-                    for _, block_width in src.block_shapes
-                )
-            ),
+            is_tiled=src.is_tiled,
             attributes=src.tags(),
         )
 
@@ -106,10 +95,10 @@ class RasterioWindowReader(WindowReader):
         self,
         request: WindowReadRequest,
     ) -> WindowReadResult:
-        if request.variable_name is not None or request.dimension_indices:
+        if not isinstance(request.selection, RasterBandSelection):
             raise ValueError(
-                "Rasterio window reads do not accept Xarray variable or "
-                "dimension selectors."
+                "Rasterio window reads require RasterBandSelection, not "
+                "XarrayVariableSelection."
             )
 
         src = self.dataset
@@ -119,7 +108,9 @@ class RasterioWindowReader(WindowReader):
             width=request.window.width,
             height=request.window.height,
         )
-        source_indices = request.source_indices or tuple(src.indexes)
+        source_indices = (
+            request.selection.source_indices or tuple(src.indexes)
+        )
 
         invalid_indices = set(source_indices) - set(src.indexes)
         if invalid_indices:
@@ -128,15 +119,12 @@ class RasterioWindowReader(WindowReader):
                 f"{sorted(invalid_indices)}"
             )
 
-        row_end = request.window.row_offset + request.window.height
-        column_end = request.window.column_offset + request.window.width
-        extends_beyond_dataset = (
-            request.window.row_offset < 0
-            or request.window.column_offset < 0
-            or row_end > src.height
-            or column_end > src.width
+        geometry = resolve_window_geometry(
+            request.window,
+            source_height=src.height,
+            source_width=src.width,
         )
-        if extends_beyond_dataset and not request.boundless:
+        if geometry.extends_beyond_source and not request.boundless:
             raise ValueError(
                 "Window extends beyond the dataset; set boundless=True "
                 "to pad the requested extent."
@@ -164,6 +152,7 @@ class RasterioWindowReader(WindowReader):
         return WindowReadResult(
             data=data,
             valid_mask=valid_mask,
+            dimensions=("band", "y", "x"),
             transform=tuple(src.window_transform(window)),
             request=request,
         )

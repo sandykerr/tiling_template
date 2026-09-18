@@ -5,8 +5,10 @@ import numpy as np
 
 from tiling_template.records import (
     PixelWindow,
+    RasterBandSelection,
     WindowReadRequest,
     WindowReadResult,
+    XarrayVariableSelection,
 )
 
 
@@ -29,76 +31,85 @@ class TestPixelWindow(unittest.TestCase):
                     PixelWindow(0, 0, height, width)
 
 
-class TestWindowReadRequest(unittest.TestCase):
-    def setUp(self):
-        self.window = PixelWindow(0, 0, 4, 5)
-
+class TestRasterBandSelection(unittest.TestCase):
     def test_accepts_unique_one_based_source_indices(self):
-        request = WindowReadRequest(
-            window=self.window,
-            source_indices=(1, 3),
-        )
+        selection = RasterBandSelection(source_indices=(1, 3))
 
-        self.assertEqual(request.source_indices, (1, 3))
+        self.assertEqual(selection.source_indices, (1, 3))
 
     def test_accepts_no_source_indices(self):
-        request = WindowReadRequest(window=self.window)
+        selection = RasterBandSelection()
 
-        self.assertIsNone(request.source_indices)
+        self.assertIsNone(selection.source_indices)
 
-    def test_accepts_xarray_variable_and_dimension_indices(self):
-        request = WindowReadRequest(
-            window=self.window,
+    def test_rejects_empty_source_indices(self):
+        with self.assertRaisesRegex(ValueError, "cannot be empty"):
+            RasterBandSelection(source_indices=())
+
+    def test_rejects_nonpositive_source_indices(self):
+        with self.assertRaisesRegex(ValueError, "one-based"):
+            RasterBandSelection(source_indices=(0,))
+
+    def test_rejects_duplicate_source_indices(self):
+        with self.assertRaisesRegex(ValueError, "must be unique"):
+            RasterBandSelection(source_indices=(1, 1))
+
+
+class TestXarrayVariableSelection(unittest.TestCase):
+    def test_accepts_variable_and_dimension_indices(self):
+        selection = XarrayVariableSelection(
             variable_name="temperature",
             dimension_indices=(("time", 2), ("level", 0)),
         )
 
-        self.assertEqual(request.variable_name, "temperature")
+        self.assertEqual(selection.variable_name, "temperature")
         self.assertEqual(
-            request.dimension_indices,
+            selection.dimension_indices,
             (("time", 2), ("level", 0)),
         )
 
-    def test_rejects_empty_source_indices(self):
-        with self.assertRaisesRegex(ValueError, "cannot be empty"):
-            WindowReadRequest(window=self.window, source_indices=())
+    def test_accepts_zero_based_and_negative_dimension_indices(self):
+        selection = XarrayVariableSelection(
+            variable_name="temperature",
+            dimension_indices=(("time", 0), ("level", -1)),
+        )
 
-    def test_rejects_nonpositive_source_indices(self):
-        with self.assertRaisesRegex(ValueError, "one-based"):
-            WindowReadRequest(window=self.window, source_indices=(0,))
-
-    def test_rejects_duplicate_source_indices(self):
-        with self.assertRaisesRegex(ValueError, "must be unique"):
-            WindowReadRequest(window=self.window, source_indices=(1, 1))
+        self.assertEqual(
+            selection.dimension_indices,
+            (("time", 0), ("level", -1)),
+        )
 
     def test_rejects_blank_variable_name(self):
         with self.assertRaisesRegex(ValueError, "cannot be blank"):
-            WindowReadRequest(window=self.window, variable_name="  ")
-
-    def test_rejects_raster_and_xarray_selectors_together(self):
-        with self.assertRaisesRegex(ValueError, "mutually exclusive"):
-            WindowReadRequest(
-                window=self.window,
-                source_indices=(1,),
-                variable_name="temperature",
-            )
+            XarrayVariableSelection(variable_name="  ")
 
     def test_rejects_duplicate_dimension_names(self):
         with self.assertRaisesRegex(ValueError, "must be unique"):
-            WindowReadRequest(
-                window=self.window,
+            XarrayVariableSelection(
                 variable_name="temperature",
                 dimension_indices=(("time", 0), ("time", 1)),
             )
+
+
+class TestWindowReadRequest(unittest.TestCase):
+    def test_requires_and_retains_backend_selection(self):
+        selection = RasterBandSelection(source_indices=(1,))
+        request = WindowReadRequest(
+            window=PixelWindow(0, 0, 4, 5),
+            selection=selection,
+        )
+
+        self.assertIs(request.selection, selection)
 
 
 class TestWindowReadResult(unittest.TestCase):
     def setUp(self):
         self.request = WindowReadRequest(
             window=PixelWindow(0, 0, 2, 3),
-            source_indices=(1,),
+            selection=RasterBandSelection(source_indices=(1,)),
         )
         self.data = np.zeros((1, 2, 3), dtype=np.uint8)
+        self.dimensions = ("band", "y", "x")
         self.transform = (
             1.0,
             0.0,
@@ -117,17 +128,20 @@ class TestWindowReadResult(unittest.TestCase):
         result = WindowReadResult(
             data=self.data,
             valid_mask=mask,
+            dimensions=self.dimensions,
             transform=self.transform,
             request=self.request,
         )
 
         self.assertIs(result.request, self.request)
+        self.assertEqual(result.dimensions, self.dimensions)
         self.assertEqual(result.valid_mask.shape, result.data.shape)
 
     def test_allows_no_validity_mask(self):
         result = WindowReadResult(
             data=self.data,
             valid_mask=None,
+            dimensions=self.dimensions,
             transform=self.transform,
             request=self.request,
         )
@@ -139,6 +153,17 @@ class TestWindowReadResult(unittest.TestCase):
             WindowReadResult(
                 data=self.data,
                 valid_mask=np.ones((2, 3), dtype=np.bool_),
+                dimensions=self.dimensions,
+                transform=self.transform,
+                request=self.request,
+            )
+
+    def test_rejects_dimension_count_that_does_not_match_data_rank(self):
+        with self.assertRaisesRegex(ValueError, "one name per data axis"):
+            WindowReadResult(
+                data=self.data,
+                valid_mask=None,
+                dimensions=("y", "x"),
                 transform=self.transform,
                 request=self.request,
             )
@@ -147,6 +172,7 @@ class TestWindowReadResult(unittest.TestCase):
         hints = get_type_hints(WindowReadResult)
 
         self.assertIs(hints["request"], WindowReadRequest)
+        self.assertEqual(hints["dimensions"], tuple[str, ...])
 
 
 if __name__ == "__main__":

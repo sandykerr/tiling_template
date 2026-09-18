@@ -2,8 +2,8 @@ from .base import ReaderRegistry
 
 
 def default_reader_registry() -> ReaderRegistry:
-    from .rasterio_reader import RasterioBackend
-    from .xarray_reader import XarrayBackend
+    from .rasterio import RasterioBackend
+    from .xarray import XarrayBackend
 
     registry = ReaderRegistry()
     registry.register(
